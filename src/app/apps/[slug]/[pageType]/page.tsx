@@ -97,7 +97,15 @@ export default async function AppLegalPage({ params }: PageProps) {
 
         {/* Content */}
         <div
-          className="prose prose-sm dark:prose-invert max-w-none text-foreground leading-relaxed"
+          className="prose prose-neutral dark:prose-invert max-w-none
+            prose-h2:text-xl prose-h2:font-heading prose-h2:font-bold prose-h2:text-foreground prose-h2:mt-0 prose-h2:mb-4
+            prose-h3:text-base prose-h3:font-heading prose-h3:font-semibold prose-h3:text-foreground prose-h3:mt-8 prose-h3:mb-2
+            prose-h4:text-sm prose-h4:font-semibold prose-h4:text-blue-400 prose-h4:mt-6 prose-h4:mb-1
+            prose-p:text-sm prose-p:text-muted-foreground prose-p:leading-relaxed
+            prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-foreground
+            prose-li:text-sm prose-li:text-muted-foreground
+            prose-hr:border-border"
           dangerouslySetInnerHTML={{ __html: page.content }}
         />
 
