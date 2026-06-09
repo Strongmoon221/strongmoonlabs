@@ -38,40 +38,22 @@ const values = [
 
 const timeline = [
   {
-    year: '2019',
+    year: '2025',
     title: 'The Beginning',
     description:
-      'Founded by two developers who were frustrated with low-quality offshore outsourcing. Strongmoon Labs started as a two-person boutique studio with one simple promise: deliver what you promise.',
+      'Strongmoon Labs was founded with one clear goal: build high-quality digital products that actually deliver results. Started as a small but focused team with a passion for clean code and great design.',
   },
   {
-    year: '2020',
-    title: 'First 10 Clients',
+    year: '2025',
+    title: 'First Projects',
     description:
-      'Grew from 2 to 8 team members. Delivered our first mobile app to 10,000+ users. Learned that great design and great engineering are inseparable.',
+      'Took on our first client projects — mobile apps and web platforms. Learned fast, shipped clean, and built a reputation for reliability and attention to detail.',
   },
   {
-    year: '2021',
-    title: 'Going Full-Stack',
+    year: '2025+',
+    title: 'Growing Forward',
     description:
-      'Expanded into web, SaaS, and business automation. Launched our first multi-tenant SaaS product. Hit $1M in cumulative project revenue.',
-  },
-  {
-    year: '2022',
-    title: 'AI-First Pivot',
-    description:
-      'Early adoption of LLMs and generative AI. Built our first AI-powered products and established an internal AI research practice.',
-  },
-  {
-    year: '2023',
-    title: 'Scale & Process',
-    description:
-      'Formalized our delivery process and QA standards. 12 team members, 35+ completed projects, NPS score of 72. Zero missed deadlines all year.',
-  },
-  {
-    year: '2024+',
-    title: 'What\'s Next',
-    description:
-      'Expanding into enterprise clients and launching two internal SaaS products. Building the team to 20+ while maintaining our senior-only hiring bar.',
+      'Expanding our services into SaaS, AI-powered solutions, and business automation. Every project is a chance to raise the bar. The journey is just getting started.',
   },
 ]
 
@@ -137,9 +119,9 @@ export default function AboutPage() {
         <div className="container-custom">
           <SectionHeader
             eyebrow="Our Story"
-            title="From Two Devs to a"
-            titleHighlight="Full Studio"
-            description="Five years of growth, learning, and building things we're genuinely proud of."
+            title="Just Getting"
+            titleHighlight="Started"
+            description="Founded in 2025 with a clear mission: build exceptional digital products and grow with our clients."
             className="mb-16"
           />
 
