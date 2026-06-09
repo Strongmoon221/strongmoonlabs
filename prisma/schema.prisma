@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id              String       @id @default(cuid())
+  title           String
+  slug            String       @unique
+  description     String
+  longDescription String?
+  category        String       // 'mobile' | 'website' | 'saas' | 'tool'
+  technologies    String       // JSON array
+  features        String?      // JSON array
+  challenges      String?
+  results         String?
+  liveUrl         String?
+  githubUrl       String?
+  coverImage      String?
+  featured        Boolean      @default(false)
+  order           Int          @default(0)
+  published       Boolean      @default(true)
+  screenshots     Screenshot[]
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+}
+
+model Screenshot {
+  id        String   @id @default(cuid())
+  url       String
+  alt       String?
+  order     Int      @default(0)
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  createdAt DateTime @default(now())
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
