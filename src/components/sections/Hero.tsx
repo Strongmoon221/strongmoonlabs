@@ -56,7 +56,7 @@ export default function Hero() {
         <motion.div variants={fadeUp} className="flex justify-center mb-8">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-medium">
             <Sparkles className="w-3.5 h-3.5" />
-            Mobile Apps & Websites — Founded 2025
+            Mobile Apps & Websites — Founded 2026
           </span>
         </motion.div>
 

@@ -5,6 +5,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import AdminShell from '@/components/admin/AdminShell'
 import AppPageEditor from '@/components/admin/AppPageEditor'
+import AppSettingsForm from '@/components/admin/AppSettingsForm'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -16,6 +17,8 @@ const PAGE_TYPES = [
   { type: 'terms', label: 'Terms of Service', url: 'terms', defaultTitle: 'Terms of Service' },
   { type: 'support', label: 'Support', url: 'support', defaultTitle: 'Support' },
 ]
+
+const ALL_TABS = [...PAGE_TYPES.map((p) => p.type), 'settings']
 
 export default async function EditAppPage({ params, searchParams }: PageProps) {
   const session = await getSession()
@@ -30,7 +33,7 @@ export default async function EditAppPage({ params, searchParams }: PageProps) {
   })
   if (!app) notFound()
 
-  const activeType = activeTab || 'privacy'
+  const activeType = (activeTab && ALL_TABS.includes(activeTab)) ? activeTab : 'privacy'
 
   return (
     <AdminShell>
@@ -85,6 +88,16 @@ export default async function EditAppPage({ params, searchParams }: PageProps) {
               </div>
             )
           })}
+          <Link
+            href={`/admin/apps/${id}/edit?page=settings`}
+            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-all -mb-px ${
+              activeType === 'settings'
+                ? 'border-blue-500 text-blue-400'
+                : 'border-transparent text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            Settings
+          </Link>
         </div>
 
         {/* Editor */}
@@ -101,6 +114,17 @@ export default async function EditAppPage({ params, searchParams }: PageProps) {
             />
           )
         })}
+
+        {activeType === 'settings' && (
+          <AppSettingsForm
+            appId={app.id}
+            defaultName={app.name}
+            defaultSlug={app.slug}
+            defaultDescription={app.description ?? ''}
+            defaultIconUrl={app.iconUrl ?? ''}
+            defaultPublished={app.published}
+          />
+        )}
       </div>
     </AdminShell>
   )
