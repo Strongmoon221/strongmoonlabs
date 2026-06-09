@@ -12,9 +12,9 @@ const footerLinks = {
   ],
   Services: [
     { label: 'Mobile Apps', href: '/about#services' },
-    { label: 'Web Development', href: '/about#services' },
-    { label: 'SaaS Products', href: '/about#services' },
-    { label: 'AI Solutions', href: '/about#services' },
+    { label: 'Website Development', href: '/about#services' },
+    { label: 'UI/UX Design', href: '/about#services' },
+    { label: 'Support & Maintenance', href: '/about#services' },
   ],
 }
 
@@ -45,7 +45,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
-              We build exceptional digital products — mobile apps, web platforms, SaaS, and AI-powered solutions that drive real business results.
+              We build modern websites and mobile apps that help businesses grow. Clean design, solid code, real results.
             </p>
             <div className="flex items-center gap-3">
               {socialLinks.map(({ icon: Icon, href, label }) => (

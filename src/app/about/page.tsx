@@ -76,10 +76,9 @@ export default function AboutPage() {
             </AnimatedSection>
             <AnimatedSection delay={0.1}>
               <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-                Strongmoon Labs is a software development company built on the belief that
-                exceptional engineering and great design are not a luxury — they&apos;re a
-                competitive necessity. We partner with ambitious teams to turn complex ideas into
-                products that users love and businesses depend on.
+                Strongmoon Labs is a young software development studio focused on building
+                modern websites and mobile apps. We care about clean code, great design,
+                and delivering products that actually work — on time and on budget.
               </p>
             </AnimatedSection>
           </div>
@@ -131,7 +130,7 @@ export default function AboutPage() {
 
             <div className="space-y-10">
               {timeline.map((item, i) => (
-                <AnimatedSection key={item.year} delay={i * 0.08}>
+                <AnimatedSection key={i} delay={i * 0.08}>
                   <div
                     className={`relative flex gap-6 md:gap-0 ${
                       i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'

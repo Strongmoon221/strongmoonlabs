@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -11,13 +11,13 @@ model Project {
   id              String       @id @default(cuid())
   title           String
   slug            String       @unique
-  description     String
-  longDescription String?
-  category        String       // 'mobile' | 'website' | 'saas' | 'tool'
-  technologies    String       // JSON array
-  features        String?      // JSON array
-  challenges      String?
-  results         String?
+  description     String       @db.Text
+  longDescription String?      @db.Text
+  category        String
+  technologies    String       @db.Text
+  features        String?      @db.Text
+  challenges      String?      @db.Text
+  results         String?      @db.Text
   liveUrl         String?
   githubUrl       String?
   coverImage      String?
@@ -53,7 +53,32 @@ model ContactMessage {
   name      String
   email     String
   subject   String?
-  message   String
+  message   String   @db.Text
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+model App {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  iconUrl     String?
+  published   Boolean   @default(true)
+  pages       AppPage[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AppPage {
+  id        String   @id @default(cuid())
+  type      String   // 'privacy' | 'terms' | 'support'
+  title     String
+  content   String   @db.LongText
+  app       App      @relation(fields: [appId], references: [id], onDelete: Cascade)
+  appId     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([appId, type])
 }

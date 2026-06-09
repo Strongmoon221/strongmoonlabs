@@ -5,10 +5,10 @@ import Link from 'next/link'
 import { ArrowRight, Sparkles, ChevronDown } from 'lucide-react'
 
 const stats = [
-  { label: 'Projects Delivered', value: '50+' },
-  { label: 'Happy Clients', value: '35+' },
-  { label: 'Technologies', value: '20+' },
-  { label: 'Years Experience', value: '5+' },
+  { label: 'Projects Delivered', value: '2' },
+  { label: 'Happy Clients', value: '1' },
+  { label: 'Technologies', value: '15+' },
+  { label: 'Founded', value: '2025' },
 ]
 
 const stagger = {
@@ -56,7 +56,7 @@ export default function Hero() {
         <motion.div variants={fadeUp} className="flex justify-center mb-8">
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-sm font-medium">
             <Sparkles className="w-3.5 h-3.5" />
-            Building Digital Futures Since 2019
+            Mobile Apps & Websites — Founded 2025
           </span>
         </motion.div>
 
@@ -75,8 +75,8 @@ export default function Hero() {
           variants={fadeUp}
           className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
         >
-          We craft exceptional mobile apps, web platforms, SaaS products, and AI-powered solutions
-          that transform businesses and delight users — from concept to scale.
+          We build modern mobile apps and websites that look great, work fast,
+          and help your business grow — from the first idea to launch.
         </motion.p>
 
         {/* CTAs */}

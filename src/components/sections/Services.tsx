@@ -1,4 +1,4 @@
-import { Smartphone, Globe, Code2, Layers, Zap, Brain } from 'lucide-react'
+import { Smartphone, Globe, Palette, Zap, Search, HeadphonesIcon } from 'lucide-react'
 import SectionHeader from '@/components/ui/SectionHeader'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 
@@ -7,53 +7,53 @@ const services = [
     icon: Smartphone,
     title: 'Mobile App Development',
     description:
-      'Native and cross-platform iOS & Android apps built with React Native and Flutter. Performant, polished, and App Store ready.',
-    features: ['React Native & Flutter', 'iOS & Android', 'App Store optimization', 'Push notifications'],
+      'Cross-platform iOS & Android apps built with React Native. Clean UI, smooth performance, and ready for the App Store and Google Play.',
+    features: ['React Native', 'iOS & Android', 'App Store publishing', 'Push notifications'],
     color: 'from-blue-500 to-cyan-500',
     glow: 'group-hover:shadow-blue-500/20',
   },
   {
     icon: Globe,
-    title: 'Web Application Development',
+    title: 'Website Development',
     description:
-      'Full-stack web applications with modern frameworks. From landing pages to complex multi-tenant platforms, built for scale.',
-    features: ['Next.js & React', 'TypeScript', 'REST & GraphQL APIs', 'SEO optimized'],
+      'Modern, fast, and responsive websites. From landing pages to multi-page business sites — built to impress and convert.',
+    features: ['Next.js & React', 'Responsive design', 'SEO optimized', 'Fast loading'],
     color: 'from-violet-500 to-purple-500',
     glow: 'group-hover:shadow-violet-500/20',
   },
   {
-    icon: Code2,
-    title: 'Custom Software Solutions',
+    icon: Palette,
+    title: 'UI/UX Design',
     description:
-      'Bespoke software tailored to your exact workflow. We replace legacy systems and build tools your team will actually love using.',
-    features: ['Requirements analysis', 'System architecture', 'Legacy migration', 'Training & docs'],
+      'Clean, modern interfaces that users actually enjoy. We design every screen with purpose — beautiful and functional.',
+    features: ['Figma prototypes', 'Mobile-first design', 'Brand consistency', 'User-friendly layouts'],
     color: 'from-emerald-500 to-teal-500',
     glow: 'group-hover:shadow-emerald-500/20',
   },
   {
-    icon: Layers,
-    title: 'SaaS Products',
+    icon: Search,
+    title: 'SEO & Performance',
     description:
-      'End-to-end SaaS development from MVP to enterprise-grade platform. Multi-tenancy, billing, onboarding — the full package.',
-    features: ['Multi-tenant architecture', 'Subscription billing', 'Admin dashboards', 'User analytics'],
+      'We build sites that rank. Fast load times, semantic HTML, meta tags, and structured data — optimized from day one.',
+    features: ['On-page SEO', 'Core Web Vitals', 'Google Analytics setup', 'Sitemap & robots.txt'],
     color: 'from-orange-500 to-amber-500',
     glow: 'group-hover:shadow-orange-500/20',
   },
   {
     icon: Zap,
-    title: 'Business Automation',
+    title: 'Landing Pages',
     description:
-      'Eliminate repetitive work with intelligent automation. Connect your tools, automate workflows, and let your team focus on what matters.',
-    features: ['Workflow automation', 'API integrations', 'Data pipelines', 'RPA solutions'],
+      'High-converting landing pages for your product, service, or campaign. Built fast, looks sharp, performs great.',
+    features: ['Quick turnaround', 'Conversion focused', 'Mobile optimized', 'Easy to update'],
     color: 'from-pink-500 to-rose-500',
     glow: 'group-hover:shadow-pink-500/20',
   },
   {
-    icon: Brain,
-    title: 'AI-Powered Solutions',
+    icon: HeadphonesIcon,
+    title: 'Support & Maintenance',
     description:
-      'Integrate large language models, computer vision, and ML pipelines into your product. Real AI that delivers measurable value.',
-    features: ['LLM integration', 'Custom ML models', 'Computer vision', 'Predictive analytics'],
+      'We don\'t disappear after launch. Bug fixes, updates, small improvements — we keep your product healthy and up to date.',
+    features: ['Bug fixes', 'Content updates', 'Performance monitoring', 'Regular backups'],
     color: 'from-indigo-500 to-blue-500',
     glow: 'group-hover:shadow-indigo-500/20',
   },
