@@ -1,4 +1,6 @@
 import { prisma } from '@/lib/db'
+
+export const dynamic = 'force-dynamic'
 import { serializeProject } from '@/lib/utils'
 import Hero from '@/components/sections/Hero'
 import Services from '@/components/sections/Services'
