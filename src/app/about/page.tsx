@@ -38,19 +38,19 @@ const values = [
 
 const timeline = [
   {
-    year: '2025',
+    year: '2026',
     title: 'The Beginning',
     description:
       'Strongmoon Labs was founded with one clear goal: build high-quality digital products that actually deliver results. Started as a small but focused team with a passion for clean code and great design.',
   },
   {
-    year: '2025',
+    year: '2026',
     title: 'First Projects',
     description:
       'Took on our first client projects — mobile apps and web platforms. Learned fast, shipped clean, and built a reputation for reliability and attention to detail.',
   },
   {
-    year: '2025+',
+    year: '2026+',
     title: 'Growing Forward',
     description:
       'Expanding our services into SaaS, AI-powered solutions, and business automation. Every project is a chance to raise the bar. The journey is just getting started.',
@@ -120,7 +120,7 @@ export default function AboutPage() {
             eyebrow="Our Story"
             title="Just Getting"
             titleHighlight="Started"
-            description="Founded in 2025 with a clear mission: build exceptional digital products and grow with our clients."
+            description="Founded in 2026 with a clear mission: build exceptional digital products and grow with our clients."
             className="mb-16"
           />
 

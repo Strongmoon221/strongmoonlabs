@@ -8,7 +8,7 @@ const stats = [
   { label: 'Projects Delivered', value: '2' },
   { label: 'Happy Clients', value: '1' },
   { label: 'Technologies', value: '15+' },
-  { label: 'Founded', value: '2025' },
+  { label: 'Founded', value: '2026' },
 ]
 
 const stagger = {
