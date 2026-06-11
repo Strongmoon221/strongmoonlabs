@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Mail, MessageSquare, Github, Twitter, Linkedin, Clock } from 'lucide-react'
+import { Mail, Clock } from 'lucide-react'
 import AnimatedSection from '@/components/ui/AnimatedSection'
 import ContactForm from '@/components/contact/ContactForm'
 
@@ -24,11 +24,6 @@ const contactInfo = [
   },
 ]
 
-const socialLinks = [
-  { icon: Github, label: 'GitHub', href: 'https://github.com/strongmoonlabs' },
-  { icon: Twitter, label: 'Twitter', href: 'https://twitter.com/strongmoonlabs' },
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/strongmoonlabs' },
-]
 
 export default function ContactPage() {
   return (
@@ -87,44 +82,6 @@ export default function ContactPage() {
               })}
             </div>
 
-            {/* Social links */}
-            <AnimatedSection delay={0.3}>
-              <div>
-                <p className="text-sm text-muted-foreground font-medium mb-3 uppercase tracking-wider">
-                  Follow Us
-                </p>
-                <div className="flex items-center gap-3">
-                  {socialLinks.map(({ icon: Icon, label, href }) => (
-                    <a
-                      key={label}
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={label}
-                      className="w-10 h-10 flex items-center justify-center rounded-xl border border-border text-muted-foreground hover:text-foreground hover:border-blue-500/50 hover:bg-blue-500/5 transition-all"
-                    >
-                      <Icon className="w-5 h-5" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </AnimatedSection>
-
-            {/* FAQ teaser */}
-            <AnimatedSection delay={0.35} className="mt-10">
-              <div className="p-5 rounded-xl border border-border bg-card">
-                <div className="flex items-start gap-3">
-                  <MessageSquare className="w-5 h-5 text-violet-400 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium text-foreground text-sm mb-1">Not ready to commit?</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      That&apos;s okay. Send us a message anyway — we offer free 30-minute discovery
-                      calls with no sales pressure. Just honest advice about your project.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
           </div>
 
           {/* Right: form */}

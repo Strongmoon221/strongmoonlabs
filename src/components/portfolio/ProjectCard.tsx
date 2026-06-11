@@ -12,10 +12,10 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Link
       href={`/portfolio/${project.slug}`}
-      className="group block rounded-2xl border border-border bg-card overflow-hidden hover:border-zinc-600/60 dark:hover:border-zinc-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 h-full"
+      className="group block rounded-2xl border border-border bg-card overflow-hidden isolate hover:border-zinc-600/60 dark:hover:border-zinc-500/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 h-full"
     >
       {/* Cover */}
-      <div className="relative h-52 bg-muted overflow-hidden">
+      <div className="relative h-52 bg-muted overflow-hidden rounded-t-2xl">
         {project.coverImage ? (
           <Image
             src={project.coverImage}

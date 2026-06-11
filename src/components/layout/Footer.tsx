@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Moon, Mail, Github, Twitter, Linkedin, ArrowUpRight } from 'lucide-react'
+import { Moon, ArrowUpRight } from 'lucide-react'
 
 const footerLinks = {
   Company: [
@@ -18,12 +18,6 @@ const footerLinks = {
   ],
 }
 
-const socialLinks = [
-  { icon: Github, href: 'https://github.com/strongmoonlabs', label: 'GitHub' },
-  { icon: Twitter, href: 'https://twitter.com/strongmoonlabs', label: 'Twitter' },
-  { icon: Linkedin, href: 'https://linkedin.com/company/strongmoonlabs', label: 'LinkedIn' },
-  { icon: Mail, href: 'mailto:hello@strongmoonlabs.com', label: 'Email' },
-]
 
 export default function Footer() {
   const pathname = usePathname()
@@ -47,20 +41,6 @@ export default function Footer() {
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs mb-6">
               We build modern websites and mobile apps that help businesses grow. Clean design, solid code, real results.
             </p>
-            <div className="flex items-center gap-3">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target={href.startsWith('http') ? '_blank' : undefined}
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="w-9 h-9 flex items-center justify-center rounded-lg border border-border text-muted-foreground hover:text-foreground hover:border-blue-500/50 hover:bg-blue-500/5 transition-all duration-200"
-                >
-                  <Icon className="w-4 h-4" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Links */}
