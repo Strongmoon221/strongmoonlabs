@@ -4,39 +4,39 @@ import AnimatedSection from '@/components/ui/AnimatedSection'
 const reasons = [
   {
     icon: Award,
-    title: 'Senior-Only Team',
+    title: 'Direct Communication',
     description:
-      'Every project is handled by senior developers with 5+ years of experience. No juniors learning on your dime.',
+      'You work directly with the developer — no account managers, no middlemen. Fast answers, clear updates, real conversations.',
   },
   {
     icon: Clock,
-    title: 'On-Time, Every Time',
+    title: 'Realistic Timelines',
     description:
-      'We have a 94% on-time delivery rate. Realistic timelines, proactive communication, zero surprises at launch.',
+      'Honest deadlines from the start. I set timelines I can actually hit and keep you updated every step of the way.',
   },
   {
     icon: Shield,
     title: 'Security by Default',
     description:
-      'Security is built in from day one — OWASP compliance, input validation, encrypted data, and regular audits.',
+      'Security is built in from day one — input validation, encrypted data, and safe coding practices on every project.',
   },
   {
     icon: Eye,
     title: 'Full Transparency',
     description:
-      'Daily updates, public project boards, and honest conversations. You always know exactly where your project stands.',
+      'No surprises. You always know where your project stands — what\'s done, what\'s next, and what might shift.',
   },
   {
     icon: HeadphonesIcon,
-    title: '90-Day Post-Launch Support',
+    title: 'Post-Launch Support',
     description:
-      'Every project includes 90 days of free support after launch. We stand behind our work.',
+      'Every project includes support after launch. I stand behind my work and make sure everything runs smoothly.',
   },
   {
     icon: TrendingUp,
-    title: 'Scale-Ready Architecture',
+    title: 'Clean, Maintainable Code',
     description:
-      "We build for tomorrow, not just today. Our architecture handles 10x growth without costly rewrites.",
+      'Code that\'s easy to read, extend, and hand off. Built to grow with your product, not to lock you in.',
   },
 ]
 
@@ -60,25 +60,25 @@ export default function WhyUs() {
             </AnimatedSection>
             <AnimatedSection delay={0.1}>
               <p className="text-muted-foreground leading-relaxed text-base sm:text-lg mb-8">
-                Most agencies ship code and disappear. We stay invested in your success because our
-                reputation depends on it. When you win, we win.
+                I&apos;m not an agency with dozens of clients. Every project gets my full focus —
+                because my reputation is built one project at a time. When you win, I win.
               </p>
             </AnimatedSection>
             <AnimatedSection delay={0.15}>
               <div className="flex flex-col sm:flex-row gap-6">
                 <div className="text-center sm:text-left">
-                  <div className="text-4xl font-bold gradient-text font-heading">94%</div>
-                  <div className="text-sm text-muted-foreground mt-1">On-time delivery rate</div>
+                  <div className="text-4xl font-bold gradient-text font-heading">100%</div>
+                  <div className="text-sm text-muted-foreground mt-1">Personal involvement</div>
                 </div>
                 <div className="hidden sm:block w-px bg-border" />
                 <div className="text-center sm:text-left">
-                  <div className="text-4xl font-bold gradient-text font-heading">4.9★</div>
-                  <div className="text-sm text-muted-foreground mt-1">Average client rating</div>
+                  <div className="text-4xl font-bold gradient-text font-heading">24h</div>
+                  <div className="text-sm text-muted-foreground mt-1">Response time</div>
                 </div>
                 <div className="hidden sm:block w-px bg-border" />
                 <div className="text-center sm:text-left">
-                  <div className="text-4xl font-bold gradient-text font-heading">85%</div>
-                  <div className="text-sm text-muted-foreground mt-1">Clients return for more</div>
+                  <div className="text-4xl font-bold gradient-text font-heading">0</div>
+                  <div className="text-sm text-muted-foreground mt-1">Hidden fees</div>
                 </div>
               </div>
             </AnimatedSection>

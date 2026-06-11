@@ -128,7 +128,7 @@ export default async function ProjectPage({ params }: PageProps) {
 
             {/* Cover image */}
             <AnimatedSection delay={0.2} direction="left">
-              <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden border border-border">
+              <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden isolate border border-border">
                 {project.coverImage ? (
                   <Image
                     src={project.coverImage}

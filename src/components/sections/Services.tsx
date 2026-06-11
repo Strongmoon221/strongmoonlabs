@@ -67,7 +67,7 @@ export default function Services() {
           eyebrow="What We Do"
           title="Services Built for"
           titleHighlight="Modern Businesses"
-          description="From mobile to AI, we cover the full spectrum of digital product development. Every service is delivered with senior-level expertise and production-ready quality."
+          description="Mobile apps and websites built with care, clean code, and attention to detail. Every project gets my full focus from start to finish."
           className="mb-16"
         />
 

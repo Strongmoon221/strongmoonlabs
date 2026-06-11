@@ -42,7 +42,7 @@ export default function TechStack() {
           eyebrow="Our Stack"
           title="Technologies We"
           titleHighlight="Master"
-          description="We choose the right tool for each job. Our team has deep expertise across the modern technology landscape."
+          description="I choose the right tool for each job — modern, battle-tested technologies that get the work done well."
           className="mb-16"
         />
 
