@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Smartphone,
   LifeBuoy,
+  Kanban,
   LogOut,
   Menu,
   X,
@@ -21,6 +22,7 @@ const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { href: '/admin/projects', label: 'Projects', icon: FolderOpen, exact: false },
   { href: '/admin/apps', label: 'Apps', icon: Smartphone, exact: false },
+  { href: '/admin/crm', label: 'CRM', icon: Kanban, exact: false },
   { href: '/admin/support', label: 'Support', icon: LifeBuoy, exact: false },
   { href: '/admin/messages', label: 'Messages', icon: MessageSquare, exact: false },
 ]
