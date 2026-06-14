@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
       const valid = await bcrypt.compare(password, crmUser.password)
       if (valid) {
         const permissions: string[] = (() => { try { return JSON.parse(crmUser.permissions) } catch { return [] } })()
-        const resources = (() => { try { return JSON.parse(crmUser.resources) } catch { return {} } })()
+        const resources = (() => { try { return JSON.parse(crmUser.resources ?? '{}') } catch { return {} } })()
         await createSession(crmUser.id, crmUser.email, 'crm', permissions, resources)
         return NextResponse.json({ success: true, user: { id: crmUser.id, email: crmUser.email, name: crmUser.name } })
       }

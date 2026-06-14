@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { PlusCircle, Pencil, Trash2, X, Check, Shield, ShieldOff, Eye, EyeOff, ChevronDown } from 'lucide-react'
 import { ALL_PERMISSIONS, PERMISSION_GROUPS } from '@/lib/crm-permissions'
 
-interface CrmUser { id: string; name: string; email: string; permissions: string; resources: string; active: boolean; createdAt: Date | string }
+interface CrmUser { id: string; name: string; email: string; permissions: string; resources: string | null; active: boolean; createdAt: Date | string }
 interface AppItem { id: string; name: string; slug: string }
 interface Resources { apps?: string[]; support?: string[] }
 
@@ -50,7 +50,7 @@ export default function CrmUsersManager({ initialUsers, apps }: { initialUsers: 
   }
 
   const openEdit = (u: CrmUser) => {
-    const res = parseJson<Resources>(u.resources, {})
+    const res = parseJson<Resources>(u.resources ?? '{}', {})
     setForm({
       name: u.name, email: u.email, password: '',
       permissions: parseJson<string[]>(u.permissions, []),
@@ -244,7 +244,7 @@ export default function CrmUsersManager({ initialUsers, apps }: { initialUsers: 
         <div className="space-y-3">
           {users.map(u => {
             const perms = parseJson<string[]>(u.permissions, [])
-            const res = parseJson<Resources>(u.resources, {})
+            const res = parseJson<Resources>(u.resources ?? '{}', {})
             const tabPerms = perms.filter(p => p.startsWith('tab.'))
             const actionPerms = perms.filter(p => !p.startsWith('tab.'))
             return (
