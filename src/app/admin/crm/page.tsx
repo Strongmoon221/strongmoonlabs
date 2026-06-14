@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { FolderOpen, CheckCircle2, Clock, AlertCircle, Users, PlusCircle } from 'lucide-react'
+import { FolderOpen, CheckCircle2, Clock, AlertCircle, Users, PlusCircle, UserCog } from 'lucide-react'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import AdminShell from '@/components/admin/AdminShell'
