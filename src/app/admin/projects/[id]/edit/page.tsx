@@ -21,7 +21,7 @@ export default async function EditProjectPage({ params }: PageProps) {
   if (!project) notFound()
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div>
         <Link
           href="/admin/projects"

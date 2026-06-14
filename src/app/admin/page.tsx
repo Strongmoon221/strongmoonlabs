@@ -58,7 +58,7 @@ export default async function AdminDashboardPage() {
   ]
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-5xl">
         <div className="mb-8">
           <h1 className="text-2xl font-heading font-bold text-foreground mb-1">Dashboard</h1>

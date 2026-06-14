@@ -6,8 +6,20 @@ const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-CHANGE-IN-PRODUCTION-12345'
 )
 
-export async function createSession(userId: string, email: string): Promise<void> {
-  const token = await new SignJWT({ userId, email })
+export interface SessionPayload {
+  userId: string
+  email: string
+  role: 'admin' | 'crm'
+  permissions: string[]
+}
+
+export async function createSession(
+  userId: string,
+  email: string,
+  role: 'admin' | 'crm' = 'admin',
+  permissions: string[] = []
+): Promise<void> {
+  const token = await new SignJWT({ userId, email, role, permissions })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('24h')
@@ -23,7 +35,7 @@ export async function createSession(userId: string, email: string): Promise<void
   })
 }
 
-export async function getSession(): Promise<{ userId: string; email: string } | null> {
+export async function getSession(): Promise<SessionPayload | null> {
   try {
     const cookieStore = await cookies()
     const token = cookieStore.get(COOKIE_NAME)?.value
@@ -33,6 +45,8 @@ export async function getSession(): Promise<{ userId: string; email: string } | 
     return {
       userId: payload.userId as string,
       email: payload.email as string,
+      role: (payload.role as 'admin' | 'crm') ?? 'admin',
+      permissions: (payload.permissions as string[]) ?? [],
     }
   } catch {
     return null

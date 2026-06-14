@@ -12,7 +12,7 @@ export default async function NewProjectPage() {
   if (!session) redirect('/admin/login')
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div>
         <Link
           href="/admin/projects"

@@ -37,7 +37,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
   const pri = PRIORITY_CONFIG[project.priority as keyof typeof PRIORITY_CONFIG]
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-7xl">
         <Link href="/admin/crm/projects" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="w-4 h-4" /> Projects

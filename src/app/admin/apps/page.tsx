@@ -22,7 +22,7 @@ export default async function AdminAppsPage() {
   })
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-5xl">
         <div className="flex items-center justify-between mb-8">
           <div>

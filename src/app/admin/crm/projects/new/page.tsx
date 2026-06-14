@@ -15,7 +15,7 @@ export default async function NewProjectPage() {
   const team = await prisma.crmUser.findMany({ orderBy: { name: 'asc' } })
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-2xl">
         <Link href="/admin/crm/projects" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="w-4 h-4" /> Back to Projects

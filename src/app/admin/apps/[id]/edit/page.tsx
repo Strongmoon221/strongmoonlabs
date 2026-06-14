@@ -36,7 +36,7 @@ export default async function EditAppPage({ params, searchParams }: PageProps) {
   const activeType = (activeTab && ALL_TABS.includes(activeTab)) ? activeTab : 'privacy'
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-4xl">
         <Link href="/admin/apps" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
           <ArrowLeft className="w-4 h-4" /> Back to Apps

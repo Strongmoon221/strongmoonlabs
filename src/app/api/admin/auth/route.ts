@@ -14,19 +14,28 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email, password } = loginSchema.parse(body)
 
-    const user = await prisma.adminUser.findUnique({ where: { email } })
-    if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+    // Check admin user first
+    const adminUser = await prisma.adminUser.findUnique({ where: { email } })
+    if (adminUser) {
+      const valid = await bcrypt.compare(password, adminUser.password)
+      if (valid) {
+        await createSession(adminUser.id, adminUser.email, 'admin', [])
+        return NextResponse.json({ success: true, user: { id: adminUser.id, email: adminUser.email, name: adminUser.name } })
+      }
     }
 
-    const valid = await bcrypt.compare(password, user.password)
-    if (!valid) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
+    // Check CRM account
+    const crmUser = await prisma.crmAccount.findUnique({ where: { email } })
+    if (crmUser && crmUser.active) {
+      const valid = await bcrypt.compare(password, crmUser.password)
+      if (valid) {
+        const permissions: string[] = (() => { try { return JSON.parse(crmUser.permissions) } catch { return [] } })()
+        await createSession(crmUser.id, crmUser.email, 'crm', permissions)
+        return NextResponse.json({ success: true, user: { id: crmUser.id, email: crmUser.email, name: crmUser.name } })
+      }
     }
 
-    await createSession(user.id, user.email)
-
-    return NextResponse.json({ success: true, user: { id: user.id, email: user.email, name: user.name } })
+    return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: 'Invalid request' }, { status: 400 })

@@ -22,7 +22,7 @@ export default async function AdminSupportPage() {
   const openCount = tickets.filter((t) => t.status === 'open').length
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-5xl">
         <div className="flex items-center justify-between mb-8">
           <div>

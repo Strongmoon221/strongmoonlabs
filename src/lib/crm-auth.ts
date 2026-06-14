@@ -1,8 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
-export { ALL_PERMISSIONS } from './crm-permissions'
-export type { PermissionKey } from './crm-permissions'
-import type { PermissionKey } from './crm-permissions'
 
 const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-CHANGE-IN-PRODUCTION-12345'
@@ -42,8 +39,4 @@ export async function getCrmSession(): Promise<{ userId: string; email: string }
   } catch {
     return null
   }
-}
-
-export function hasPermission(permissions: string[], key: PermissionKey): boolean {
-  return permissions.includes(key)
 }

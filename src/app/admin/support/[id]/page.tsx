@@ -26,7 +26,7 @@ export default async function AdminTicketPage({ params }: PageProps) {
   if (!ticket) notFound()
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-3xl">
         <Link href="/admin/support" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
           <ArrowLeft className="w-4 h-4" /> Back to Support

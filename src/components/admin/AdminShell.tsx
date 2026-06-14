@@ -18,19 +18,28 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { href: '/admin/projects', label: 'Projects', icon: FolderOpen, exact: false },
-  { href: '/admin/apps', label: 'Apps', icon: Smartphone, exact: false },
-  { href: '/admin/crm', label: 'CRM', icon: Kanban, exact: false },
-  { href: '/admin/support', label: 'Support', icon: LifeBuoy, exact: false },
-  { href: '/admin/messages', label: 'Messages', icon: MessageSquare, exact: false },
+const ALL_NAV = [
+  { href: '/admin',          label: 'Dashboard', icon: LayoutDashboard, exact: true,  perm: null },
+  { href: '/admin/projects', label: 'Projects',  icon: FolderOpen,      exact: false, perm: 'tab.projects' },
+  { href: '/admin/apps',     label: 'Apps',      icon: Smartphone,      exact: false, perm: 'tab.apps' },
+  { href: '/admin/crm',      label: 'CRM',       icon: Kanban,          exact: false, perm: 'tab.crm' },
+  { href: '/admin/support',  label: 'Support',   icon: LifeBuoy,        exact: false, perm: 'tab.support' },
+  { href: '/admin/messages', label: 'Messages',  icon: MessageSquare,   exact: false, perm: 'tab.messages' },
 ]
 
-export default function AdminShell({ children }: { children: React.ReactNode }) {
+interface AdminShellProps {
+  children: React.ReactNode
+  role?: 'admin' | 'crm'
+  permissions?: string[]
+}
+
+export default function AdminShell({ children, role = 'admin', permissions = [] }: AdminShellProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  const isAdmin = role === 'admin'
+  const navItems = ALL_NAV.filter(item => isAdmin || item.perm === null || permissions.includes(item.perm))
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth', { method: 'DELETE' })
@@ -52,7 +61,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
           <div className="flex flex-col leading-none">
             <span className="font-heading font-bold text-sm text-foreground">Strongmoon</span>
             <span className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
-              Admin Panel
+              {isAdmin ? 'Admin Panel' : 'Portal'}
             </span>
           </div>
         </Link>
@@ -80,14 +89,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
 
       {/* Bottom */}
       <div className="p-3 border-t border-border">
-        <Link
-          href="/"
-          target="_blank"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all mb-1"
-        >
-          <Moon className="w-4 h-4" />
-          View Site
-        </Link>
+        {isAdmin && (
+          <Link
+            href="/"
+            target="_blank"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all mb-1"
+          >
+            <Moon className="w-4 h-4" />
+            View Site
+          </Link>
+        )}
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-red-400 hover:bg-red-500/5 transition-all w-full"

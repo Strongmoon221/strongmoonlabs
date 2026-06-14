@@ -34,7 +34,7 @@ export default async function ProjectsPage({ searchParams }: PageProps) {
   })
 
   return (
-    <AdminShell>
+    <AdminShell role={session.role} permissions={session.permissions}>
       <div className="max-w-6xl">
         <div className="flex items-center justify-between mb-6">
           <div>

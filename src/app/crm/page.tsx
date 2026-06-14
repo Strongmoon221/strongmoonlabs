@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { FolderOpen, CheckSquare, Users, LogOut, Moon } from 'lucide-react'
+import { FolderOpen, CheckSquare, Users, Moon } from 'lucide-react'
 import { getCrmSession } from '@/lib/crm-auth'
 import { prisma } from '@/lib/db'
+import CrmLogoutButton from '@/components/crm/CrmLogoutButton'
 
 export const dynamic = 'force-dynamic'
 
@@ -40,13 +41,7 @@ export default async function CrmPortalPage() {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-sm text-muted-foreground">{user.name}</span>
-          <form action="/api/crm/auth" method="POST">
-            <Link href="/crm/login" onClick={async () => { await fetch('/api/crm/auth', { method: 'DELETE' }) }}
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-            </Link>
-          </form>
+          <CrmLogoutButton />
         </div>
       </div>
 
