@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Shield, FileText, HeadphonesIcon } from 'lucide-react'
 import { prisma } from '@/lib/db'
+import SupportForm from '@/components/apps/SupportForm'
 
 interface PageProps {
   params: Promise<{ slug: string; pageType: string }>
@@ -108,6 +109,17 @@ export default async function AppLegalPage({ params }: PageProps) {
             prose-hr:border-border"
           dangerouslySetInnerHTML={{ __html: page.content }}
         />
+
+        {pageType === 'support' && (
+          <>
+            <hr className="border-border mt-12 mb-8" />
+            <div className="p-6 rounded-2xl border border-border bg-card">
+              <h2 className="text-base font-heading font-semibold text-foreground mb-1">Contact Support</h2>
+              <p className="text-sm text-muted-foreground mb-5">Fill out the form and we&apos;ll get back to you within 24–48 hours.</p>
+              <SupportForm slug={app.slug} />
+            </div>
+          </>
+        )}
 
         <hr className="border-border mt-12 mb-6" />
         <p className="text-xs text-muted-foreground text-center">
