@@ -1,8 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp, CheckCircle2, Circle, Trash2 } from 'lucide-react'
+import { CheckCircle2, Circle, Trash2, MessageCircle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 interface App { id: string; name: string }
 interface Ticket {
@@ -23,7 +24,6 @@ export default function SupportTicketList({
   apps: App[]
 }) {
   const router = useRouter()
-  const [expanded, setExpanded] = useState<string | null>(null)
   const [filterApp, setFilterApp] = useState('')
   const [filterStatus, setFilterStatus] = useState('')
 
@@ -123,39 +123,22 @@ export default function SupportTicketList({
                 </div>
 
                 <div className="flex items-center gap-1 flex-shrink-0">
+                  <Link
+                    href={`/admin/support/${ticket.id}`}
+                    className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-blue-400 hover:bg-blue-500/10 transition-all"
+                    title="Open chat"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </Link>
                   <button
                     onClick={() => deleteTicket(ticket.id)}
                     className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-all"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>
-                  <button
-                    onClick={() => setExpanded(expanded === ticket.id ? null : ticket.id)}
-                    className="w-8 h-8 flex items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
-                  >
-                    {expanded === ticket.id ? (
-                      <ChevronUp className="w-4 h-4" />
-                    ) : (
-                      <ChevronDown className="w-4 h-4" />
-                    )}
-                  </button>
                 </div>
               </div>
 
-              {/* Expanded message */}
-              {expanded === ticket.id && (
-                <div className="px-4 pb-4 pt-0 border-t border-border mt-0">
-                  <div className="mt-3 p-4 rounded-xl bg-muted/30 text-sm text-foreground leading-relaxed whitespace-pre-wrap">
-                    {ticket.message}
-                  </div>
-                  <a
-                    href={`mailto:${ticket.email}?subject=Re: Support - ${ticket.app.name}`}
-                    className="inline-flex items-center gap-2 mt-3 text-xs text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    Reply via email →
-                  </a>
-                </div>
-              )}
             </div>
           ))}
         </div>

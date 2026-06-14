@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { CheckCircle2, AlertCircle, Send } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { AlertCircle, Send } from 'lucide-react'
 
 export default function SupportForm({ slug }: { slug: string }) {
+  const router = useRouter()
   const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle')
+  const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -17,7 +19,8 @@ export default function SupportForm({ slug }: { slug: string }) {
         body: JSON.stringify(form),
       })
       if (!res.ok) throw new Error()
-      setStatus('sent')
+      const { token } = await res.json()
+      router.push(`/support/${token}`)
     } catch {
       setStatus('error')
     }
@@ -25,16 +28,6 @@ export default function SupportForm({ slug }: { slug: string }) {
 
   const inputClass =
     'w-full px-4 py-3 rounded-xl border border-border bg-muted/30 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all'
-
-  if (status === 'sent') {
-    return (
-      <div className="flex flex-col items-center gap-3 py-8 text-center">
-        <CheckCircle2 className="w-10 h-10 text-emerald-400" />
-        <p className="font-semibold text-foreground">Message sent!</p>
-        <p className="text-sm text-muted-foreground">We&apos;ll get back to you within 24–48 hours.</p>
-      </div>
-    )
-  }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
