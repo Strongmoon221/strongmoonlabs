@@ -7,19 +7,22 @@ import Button from '@/components/ui/Button'
 
 interface CrmUser { id: string; name: string; color: string }
 
-export default function ProjectForm({ team, defaultValues }: { team: CrmUser[]; defaultValues?: Record<string, unknown> }) {
+export interface ProjectDefaults {
+  id?: string; name?: string; description?: string; status?: string
+  priority?: string; deadline?: string; archived?: boolean; memberIds?: string[]
+}
+
+export default function ProjectForm({ team, defaultValues }: { team: CrmUser[]; defaultValues?: ProjectDefaults }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [selectedMembers, setSelectedMembers] = useState<string[]>(
-    (defaultValues?.memberIds as string[]) ?? []
-  )
+  const [selectedMembers, setSelectedMembers] = useState<string[]>(defaultValues?.memberIds ?? [])
   const [form, setForm] = useState({
-    name: (defaultValues?.name as string) ?? '',
-    description: (defaultValues?.description as string) ?? '',
-    status: (defaultValues?.status as string) ?? 'planning',
-    priority: (defaultValues?.priority as string) ?? 'medium',
-    deadline: (defaultValues?.deadline as string) ?? '',
+    name: defaultValues?.name ?? '',
+    description: defaultValues?.description ?? '',
+    status: defaultValues?.status ?? 'planning',
+    priority: defaultValues?.priority ?? 'medium',
+    deadline: defaultValues?.deadline ?? '',
   })
 
   const isEdit = !!defaultValues?.id

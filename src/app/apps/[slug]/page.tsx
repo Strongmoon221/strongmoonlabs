@@ -35,7 +35,6 @@ export default async function AppIndexPage({ params }: PageProps) {
   if (!app) notFound()
 
   const availablePages = PAGE_TYPES.filter((p) => app.pages.some((ap) => ap.type === p.type))
-  const missingPages = PAGE_TYPES.filter((p) => !app.pages.some((ap) => ap.type === p.type))
 
   return (
     <div className="min-h-screen bg-background pt-24 pb-20">

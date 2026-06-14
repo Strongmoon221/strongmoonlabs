@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Pencil, Archive, Trash2, X } from 'lucide-react'
-import ProjectForm from './ProjectForm'
+import ProjectForm, { type ProjectDefaults } from './ProjectForm'
 
 interface ProjectData {
   id: string; name: string; description: string; status: string
