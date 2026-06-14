@@ -26,9 +26,24 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  if (pathname.startsWith('/crm') && !pathname.startsWith('/crm/login')) {
+    const token = request.cookies.get('crm_session')?.value
+
+    if (!token) {
+      return NextResponse.redirect(new URL('/crm/login', request.url))
+    }
+
+    try {
+      await jwtVerify(token, secret)
+      return NextResponse.next()
+    } catch {
+      return NextResponse.redirect(new URL('/crm/login', request.url))
+    }
+  }
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/admin/:path*', '/crm/:path*'],
 }
