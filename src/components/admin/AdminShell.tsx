@@ -15,16 +15,18 @@ import {
   Menu,
   X,
   ChevronRight,
+  UserCog,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const ALL_NAV = [
-  { href: '/admin',          label: 'Dashboard', icon: LayoutDashboard, exact: true,  perm: null },
-  { href: '/admin/projects', label: 'Projects',  icon: FolderOpen,      exact: false, perm: 'tab.projects' },
-  { href: '/admin/apps',     label: 'Apps',      icon: Smartphone,      exact: false, perm: 'tab.apps' },
-  { href: '/admin/crm',      label: 'CRM',       icon: Kanban,          exact: false, perm: 'tab.crm' },
-  { href: '/admin/support',  label: 'Support',   icon: LifeBuoy,        exact: false, perm: 'tab.support' },
-  { href: '/admin/messages', label: 'Messages',  icon: MessageSquare,   exact: false, perm: 'tab.messages' },
+  { href: '/admin',            label: 'Dashboard', icon: LayoutDashboard, exact: true,  perm: null,           adminOnly: false },
+  { href: '/admin/projects',   label: 'Projects',  icon: FolderOpen,      exact: false, perm: 'tab.projects', adminOnly: false },
+  { href: '/admin/apps',       label: 'Apps',      icon: Smartphone,      exact: false, perm: 'tab.apps',     adminOnly: false },
+  { href: '/admin/crm',        label: 'CRM',       icon: Kanban,          exact: false, perm: 'tab.crm',      adminOnly: false },
+  { href: '/admin/support',    label: 'Support',   icon: LifeBuoy,        exact: false, perm: 'tab.support',  adminOnly: false },
+  { href: '/admin/messages',   label: 'Messages',  icon: MessageSquare,   exact: false, perm: 'tab.messages', adminOnly: false },
+  { href: '/admin/crm/users',  label: 'Users',     icon: UserCog,         exact: false, perm: null,           adminOnly: true  },
 ]
 
 interface AdminShellProps {
@@ -39,7 +41,11 @@ export default function AdminShell({ children, role = 'admin', permissions = [] 
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const isAdmin = role === 'admin'
-  const navItems = ALL_NAV.filter(item => isAdmin || item.perm === null || permissions.includes(item.perm))
+  const navItems = ALL_NAV.filter(item => {
+    if (item.adminOnly) return isAdmin
+    if (isAdmin) return true
+    return item.perm === null || permissions.includes(item.perm)
+  })
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth', { method: 'DELETE' })

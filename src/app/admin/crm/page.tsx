@@ -12,6 +12,7 @@ export const metadata = { title: 'CRM Dashboard' }
 export default async function CrmDashboardPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
+  if (session.role !== 'admin' && !session.permissions.includes('tab.crm')) redirect('/admin')
 
   const [projects, teamCount, taskStats] = await Promise.all([
     prisma.crmProject.findMany({

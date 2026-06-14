@@ -15,8 +15,11 @@ const PAGE_URLS: Record<string, string> = { privacy: 'privacy-policy', terms: 't
 export default async function AdminAppsPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
+  if (session.role !== 'admin' && !session.permissions.includes('tab.apps')) redirect('/admin')
 
+  const allowedAppIds = session.role === 'crm' && session.resources.apps?.length ? session.resources.apps : undefined
   const apps = await prisma.app.findMany({
+    where: allowedAppIds ? { id: { in: allowedAppIds } } : undefined,
     include: { pages: { select: { type: true } } },
     orderBy: { createdAt: 'desc' },
   })

@@ -101,6 +101,7 @@ model CrmAccount {
   email       String   @unique
   password    String
   permissions String   @db.Text // JSON array of permission keys
+  resources   String   @db.Text @default("{}") // JSON: { apps: string[], support: string[] }
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

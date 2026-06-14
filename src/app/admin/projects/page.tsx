@@ -18,6 +18,7 @@ async function getProjects() {
 export default async function AdminProjectsPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
+  if (session.role !== 'admin' && !session.permissions.includes('tab.projects')) redirect('/admin')
 
   const projects = await getProjects()
 

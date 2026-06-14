@@ -10,13 +10,20 @@ export const metadata = { title: 'Support Tickets' }
 export default async function AdminSupportPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
+  if (session.role !== 'admin' && !session.permissions.includes('tab.support')) redirect('/admin')
 
+  const allowedSupportAppIds = session.role === 'crm' && session.resources.support?.length ? session.resources.support : undefined
   const [tickets, apps] = await Promise.all([
     prisma.supportTicket.findMany({
+      where: allowedSupportAppIds ? { appId: { in: allowedSupportAppIds } } : undefined,
       include: { app: { select: { name: true, slug: true, iconUrl: true } } },
       orderBy: { createdAt: 'desc' },
     }),
-    prisma.app.findMany({ select: { id: true, name: true }, orderBy: { name: 'asc' } }),
+    prisma.app.findMany({
+      where: allowedSupportAppIds ? { id: { in: allowedSupportAppIds } } : undefined,
+      select: { id: true, name: true },
+      orderBy: { name: 'asc' },
+    }),
   ])
 
   const openCount = tickets.filter((t) => t.status === 'open').length

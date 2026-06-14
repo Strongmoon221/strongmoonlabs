@@ -9,6 +9,7 @@ export const metadata = { title: 'Messages' }
 export default async function AdminMessagesPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
+  if (session.role !== 'admin' && !session.permissions.includes('tab.messages')) redirect('/admin')
 
   const messages = await prisma.contactMessage.findMany({
     orderBy: { createdAt: 'desc' },
