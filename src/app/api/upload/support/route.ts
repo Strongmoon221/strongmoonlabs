@@ -6,6 +6,11 @@ import { randomBytes } from 'crypto'
 const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
 const MAX_SIZE = 5 * 1024 * 1024 // 5 MB
 
+// Saves outside of .next/standalone so files persist across deployments
+function getUploadDir() {
+  return join(process.cwd(), 'uploads', 'support')
+}
+
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
   const file = formData.get('file') as File | null
@@ -15,10 +20,10 @@ export async function POST(request: NextRequest) {
 
   const ext = file.name.split('.').pop()?.toLowerCase() ?? 'jpg'
   const name = `${randomBytes(12).toString('hex')}.${ext}`
-  const dir = join(process.cwd(), 'public', 'uploads', 'support')
+  const dir = getUploadDir()
 
   await mkdir(dir, { recursive: true })
   await writeFile(join(dir, name), Buffer.from(await file.arrayBuffer()))
 
-  return NextResponse.json({ url: `/uploads/support/${name}` })
+  return NextResponse.json({ url: `/api/files/support/${name}` })
 }
