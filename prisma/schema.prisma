@@ -163,6 +163,19 @@ model CrmTask {
   updatedAt   DateTime   @updatedAt
 }
 
+// ─── Monitoring ─────────────────────────────────────────────────────────────
+
+model MonitoredServer {
+  id        String   @id @default(cuid())
+  name      String
+  url       String   // e.g. http://1.2.3.4:9000
+  token     String   // Bearer token for agent auth
+  color     String   @default("#3b82f6")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model AppPage {
   id        String   @id @default(cuid())
   type      String   // 'privacy' | 'terms' | 'support'
