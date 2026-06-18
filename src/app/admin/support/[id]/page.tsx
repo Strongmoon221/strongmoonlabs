@@ -58,6 +58,7 @@ export default async function AdminTicketPage({ params }: PageProps) {
             initialMessages={ticket.messages.map(m => ({
               id: m.id,
               content: m.content,
+              imageUrl: m.imageUrl ?? null,
               fromAdmin: m.fromAdmin,
               createdAt: m.createdAt.toISOString(),
             }))}
