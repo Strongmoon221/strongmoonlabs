@@ -456,7 +456,7 @@ export default function MonitoringDashboard({ initialServers }: { initialServers
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={() => { states.forEach(s => fetchMetrics(s.server.id)); fetchIncidents() }}
+          <button onClick={() => { states.forEach(s => { fetchMetrics(s.server.id); fetchHistory(s.server.id) }); fetchIncidents() }}
             className="inline-flex items-center gap-2 px-3 py-2 border border-border text-sm text-muted-foreground rounded-xl hover:text-foreground hover:bg-muted transition-all">
             <RefreshCw className="w-4 h-4" />
           </button>
