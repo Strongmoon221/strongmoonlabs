@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { checkSSL, checkHealth, sendTelegramAlert, sendEmailAlert, alertMessage, alertHtml } from '@/lib/monitoring'
+import { checkSSL, checkHealth, sendTelegramAlert, sendEmailAlert, alertMessage, alertHtml, type AlertCtx } from '@/lib/monitoring'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
   const servers = await prisma.monitoredServer.findMany({
     where: { active: true },
     include: {
-      incidents: { where: { resolvedAt: null }, select: { id: true, type: true } },
+      incidents: { where: { resolvedAt: null }, select: { id: true, type: true, startedAt: true } },
     },
   })
 
@@ -68,11 +68,13 @@ export async function POST(request: NextRequest) {
     const openIncidents = server.incidents
     const hasOpen = (type: string) => openIncidents.some(i => i.type === type)
 
+    const ctx: AlertCtx = { cpu: cpuPercent, ram: memPercent, disk: diskPercent }
+
     async function openIncident(type: string, message: string) {
       if (hasOpen(type)) return
       await prisma.serverIncident.create({ data: { serverId: server.id, type, message } })
-      const text = alertMessage(server.name, type, message)
-      const html = alertHtml(server.name, type, message)
+      const text = alertMessage(server.name, type, message, false, ctx)
+      const html = alertHtml(server.name, type, message, false, ctx)
       if (server.alertTelegram) await sendTelegramAlert(server.alertTelegram, text)
       if (server.alertEmail) await sendEmailAlert(server.alertEmail, `🔴 [ALERT] ${server.name} — ${type}`, html)
     }
@@ -80,10 +82,11 @@ export async function POST(request: NextRequest) {
     async function resolveIncident(type: string) {
       const incident = openIncidents.find(i => i.type === type)
       if (!incident) return
+      const durationMs = Date.now() - incident.startedAt.getTime()
       await prisma.serverIncident.update({ where: { id: incident.id }, data: { resolvedAt: new Date() } })
-      const msg = `Server is back to normal`
-      const text = alertMessage(server.name, type, msg, true)
-      const html = alertHtml(server.name, type, msg, true)
+      const msg = `Back to normal`
+      const text = alertMessage(server.name, type, msg, true, { ...ctx, durationMs })
+      const html = alertHtml(server.name, type, msg, true, { ...ctx, durationMs })
       if (server.alertTelegram) await sendTelegramAlert(server.alertTelegram, text)
       if (server.alertEmail) await sendEmailAlert(server.alertEmail, `✅ [RESOLVED] ${server.name} — ${type}`, html)
     }
