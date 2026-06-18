@@ -22,11 +22,11 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   if (!ticket) return NextResponse.json({ error: 'Not found' }, { status: 404 })
   if (ticket.status === 'closed') return NextResponse.json({ error: 'Ticket is closed' }, { status: 400 })
 
-  const { content } = await request.json()
-  if (!content?.trim()) return NextResponse.json({ error: 'Empty message' }, { status: 400 })
+  const { content, imageUrl } = await request.json()
+  if (!content?.trim() && !imageUrl) return NextResponse.json({ error: 'Empty message' }, { status: 400 })
 
   const msg = await prisma.ticketMessage.create({
-    data: { content, fromAdmin: false, ticketId: ticket.id },
+    data: { content: content?.trim() || '', imageUrl: imageUrl ?? null, fromAdmin: false, ticketId: ticket.id },
   })
   return NextResponse.json(msg)
 }

@@ -78,6 +78,7 @@ model SupportTicket {
   email     String
   message   String          @db.Text
   status    String          @default("open")
+  category  String          @default("general")
   app       App             @relation(fields: [appId], references: [id], onDelete: Cascade)
   appId     String
   messages  TicketMessage[]
@@ -87,6 +88,7 @@ model SupportTicket {
 model TicketMessage {
   id        String        @id @default(cuid())
   content   String        @db.Text
+  imageUrl  String?       @db.Text
   fromAdmin Boolean       @default(false)
   ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
   ticketId  String

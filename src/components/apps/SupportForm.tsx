@@ -4,13 +4,25 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AlertCircle, Send } from 'lucide-react'
 
+const CATEGORIES = [
+  { value: 'bug',           label: 'Bug Report',        emoji: '🐛', desc: 'Something is broken' },
+  { value: 'payment',       label: 'Payment Issue',     emoji: '💳', desc: 'Billing or subscription' },
+  { value: 'account',       label: 'Account',           emoji: '👤', desc: 'Login, access, deletion' },
+  { value: 'feature',       label: 'Feature Request',   emoji: '💡', desc: 'Suggest an improvement' },
+  { value: 'performance',   label: 'Performance',       emoji: '⚡', desc: 'App is slow or crashes' },
+  { value: 'data',          label: 'Data & Privacy',    emoji: '🔒', desc: 'Data deletion or export' },
+  { value: 'sync',          label: 'Sync Issue',        emoji: '🔄', desc: 'Emails not syncing' },
+  { value: 'general',       label: 'General Question',  emoji: '💬', desc: 'Anything else' },
+]
+
 export default function SupportForm({ slug }: { slug: string }) {
   const router = useRouter()
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', message: '', category: '' })
   const [status, setStatus] = useState<'idle' | 'sending' | 'error'>('idle')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!form.category) return
     setStatus('sending')
     try {
       const res = await fetch(`/api/apps/${slug}/support`, {
@@ -30,34 +42,67 @@ export default function SupportForm({ slug }: { slug: string }) {
     'w-full px-4 py-3 rounded-xl border border-border bg-muted/30 text-foreground placeholder:text-muted-foreground text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/60 transition-all'
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-5">
+
+      {/* Category picker */}
       <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">Your Name</label>
-        <input
-          type="text"
-          required
-          placeholder="John Doe"
-          className={inputClass}
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-        />
+        <label className="block text-sm font-medium text-foreground mb-2.5">
+          Topic <span className="text-red-400">*</span>
+        </label>
+        <div className="grid grid-cols-2 gap-2">
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat.value}
+              type="button"
+              onClick={() => setForm({ ...form, category: cat.value })}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl border text-left transition-all ${
+                form.category === cat.value
+                  ? 'border-blue-500/60 bg-blue-500/10 ring-1 ring-blue-500/30'
+                  : 'border-border bg-muted/20 hover:border-border hover:bg-muted/40'
+              }`}
+            >
+              <span className="text-xl flex-shrink-0">{cat.emoji}</span>
+              <div className="min-w-0">
+                <div className={`text-xs font-semibold truncate ${form.category === cat.value ? 'text-blue-400' : 'text-foreground'}`}>
+                  {cat.label}
+                </div>
+                <div className="text-[10px] text-muted-foreground truncate">{cat.desc}</div>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
-      <div>
-        <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
-        <input
-          type="email"
-          required
-          placeholder="you@example.com"
-          className={inputClass}
-          value={form.email}
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Your Name</label>
+          <input
+            type="text"
+            required
+            placeholder="John Doe"
+            className={inputClass}
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            className={inputClass}
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+          />
+        </div>
       </div>
+
       <div>
         <label className="block text-sm font-medium text-foreground mb-1.5">Message</label>
         <textarea
           required
-          rows={5}
+          rows={4}
           placeholder="Describe your issue or question..."
           className={`${inputClass} resize-none`}
           value={form.message}
@@ -73,8 +118,8 @@ export default function SupportForm({ slug }: { slug: string }) {
 
       <button
         type="submit"
-        disabled={status === 'sending'}
-        className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-60 text-white text-sm font-semibold rounded-xl transition-all"
+        disabled={status === 'sending' || !form.category}
+        className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl transition-all"
       >
         <Send className="w-4 h-4" />
         {status === 'sending' ? 'Sending...' : 'Send Message'}
