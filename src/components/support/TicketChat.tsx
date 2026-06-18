@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Send, Paperclip, X, ImageIcon } from 'lucide-react'
-import Image from 'next/image'
 
 interface Message {
   id: string
@@ -138,17 +137,16 @@ export default function TicketChat({ token, initialMessages, status, userName, i
                 </p>
 
                 {msg.imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
                   <button
                     onClick={() => setLightbox(msg.imageUrl!)}
                     className="rounded-xl overflow-hidden border border-border max-w-xs hover:opacity-90 transition-opacity"
                   >
-                    <Image
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                       src={msg.imageUrl}
-                      alt="attachment"
-                      width={300}
-                      height={200}
-                      className="object-cover rounded-xl"
-                      unoptimized
+                      alt=""
+                      className="max-w-[300px] max-h-[240px] object-cover rounded-xl block"
                     />
                   </button>
                 )}
@@ -182,7 +180,8 @@ export default function TicketChat({ token, initialMessages, status, userName, i
         <div className="pt-4 border-t border-border mt-4 space-y-2">
           {imagePreview && (
             <div className="relative inline-block">
-              <Image src={imagePreview} alt="preview" width={120} height={80} className="rounded-xl object-cover border border-border" unoptimized />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={imagePreview} alt="" className="w-[120px] h-[80px] rounded-xl object-cover border border-border" />
               <button
                 onClick={clearImage}
                 className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-zinc-800 border border-border flex items-center justify-center hover:bg-red-500/80 transition-colors"
