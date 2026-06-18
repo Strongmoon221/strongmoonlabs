@@ -3,11 +3,10 @@
 import { useState, useEffect, useCallback } from 'react'
 import {
   Cpu, MemoryStick, HardDrive, Clock, Plus, Trash2, RefreshCw,
-  Wifi, WifiOff, X, Shield, Globe, AlertTriangle, CheckCircle2,
-  BarChart2, Map, GitCompare, List, Edit2, Check,
+  Wifi, WifiOff, X, Shield, AlertTriangle, CheckCircle2,
+  BarChart2, GitCompare, Edit2, Check,
 } from 'lucide-react'
 import Sparkline from './Sparkline'
-import WorldMap from './WorldMap'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -239,15 +238,6 @@ function ServerModal({ initial, onSave, onClose }: {
           </div>
 
           <div className="border-t border-border pt-4">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Location (for map)</p>
-            <div className="grid grid-cols-3 gap-3">
-              <div><label className="text-xs text-muted-foreground mb-1 block">Lat</label><input placeholder="48.85" className={inputCls} value={form.lat} onChange={e => f('lat', e.target.value)} /></div>
-              <div><label className="text-xs text-muted-foreground mb-1 block">Lng</label><input placeholder="2.35" className={inputCls} value={form.lng} onChange={e => f('lng', e.target.value)} /></div>
-              <div><label className="text-xs text-muted-foreground mb-1 block">Country</label><input placeholder="FR" className={inputCls} value={form.country} onChange={e => f('country', e.target.value)} /></div>
-            </div>
-          </div>
-
-          <div className="border-t border-border pt-4">
             <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Checks</p>
             <div className="space-y-3">
               <div><label className="text-xs text-muted-foreground mb-1 block">SSL Domain</label><input placeholder="example.com" className={inputCls} value={form.sslDomain} onChange={e => f('sslDomain', e.target.value)} /></div>
@@ -359,7 +349,7 @@ function CompareView({ states }: { states: ServerState[] }) {
 
 // ─── Main Dashboard ───────────────────────────────────────────────────────────
 
-type Tab = 'overview' | 'incidents' | 'map' | 'compare'
+type Tab = 'overview' | 'incidents' | 'compare'
 
 export default function MonitoringDashboard({ initialServers }: { initialServers: Server[] }) {
   const [states, setStates] = useState<ServerState[]>(
@@ -439,7 +429,6 @@ export default function MonitoringDashboard({ initialServers }: { initialServers
   const TABS = [
     { id: 'overview' as Tab,  label: 'Overview',  icon: BarChart2 },
     { id: 'incidents' as Tab, label: `Incidents${openIncidents > 0 ? ` (${openIncidents})` : ''}`, icon: AlertTriangle },
-    { id: 'map' as Tab,       label: 'Map',       icon: Map },
     { id: 'compare' as Tab,   label: 'Compare',   icon: GitCompare },
   ]
 
@@ -505,15 +494,6 @@ export default function MonitoringDashboard({ initialServers }: { initialServers
 
       {/* Incidents */}
       {tab === 'incidents' && <IncidentLog incidents={incidents} />}
-
-      {/* Map */}
-      {tab === 'map' && (
-        <WorldMap servers={states.map(s => ({
-          id: s.server.id, name: s.server.name, color: s.server.color,
-          lat: s.server.lat, lng: s.server.lng, country: s.server.country,
-          online: !!s.metrics && !s.error,
-        }))} />
-      )}
 
       {/* Compare */}
       {tab === 'compare' && (

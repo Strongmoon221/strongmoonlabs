@@ -52,13 +52,29 @@ function getPm2() {
   }
 }
 
-function getCpuPercent() {
+let prevCpuSample = null
+let lastCpuPercent = 0
+
+function sampleCpu() {
   const cpus = os.cpus()
-  const total = cpus.reduce((sum, cpu) => {
+  return cpus.reduce((sum, cpu) => {
     const t = Object.values(cpu.times).reduce((a, b) => a + b, 0)
     return { total: sum.total + t, idle: sum.idle + cpu.times.idle }
   }, { total: 0, idle: 0 })
-  return Math.round((1 - total.idle / total.total) * 100)
+}
+
+setInterval(() => {
+  const curr = sampleCpu()
+  if (prevCpuSample) {
+    const totalDiff = curr.total - prevCpuSample.total
+    const idleDiff = curr.idle - prevCpuSample.idle
+    lastCpuPercent = totalDiff > 0 ? Math.round((1 - idleDiff / totalDiff) * 100) : 0
+  }
+  prevCpuSample = curr
+}, 1000)
+
+function getCpuPercent() {
+  return lastCpuPercent
 }
 
 app.get('/metrics', (req, res) => {
