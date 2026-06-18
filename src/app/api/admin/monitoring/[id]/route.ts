@@ -30,8 +30,10 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   const session = await getSession()
   if (!session || session.role !== 'admin') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   const { id } = await params
-  const data = await request.json()
-  const server = await prisma.monitoredServer.update({ where: { id }, data })
+  const body = await request.json()
+  // Don't overwrite token if empty string was sent
+  if (!body.token) delete body.token
+  const server = await prisma.monitoredServer.update({ where: { id }, data: body })
   return NextResponse.json(server)
 }
 

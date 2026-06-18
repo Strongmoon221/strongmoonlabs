@@ -71,8 +71,8 @@ const INCIDENT_META: Record<string, { label: string; icon: string; color: string
 
 // ─── Server Card ──────────────────────────────────────────────────────────────
 
-function ServerCard({ state, onRemove, selected, onSelect }: {
-  state: ServerState; onRemove: () => void; selected: boolean; onSelect: () => void
+function ServerCard({ state, onRemove, onEdit, selected, onSelect }: {
+  state: ServerState; onRemove: () => void; onEdit: () => void; selected: boolean; onSelect: () => void
 }) {
   const { server, metrics, error, loading, lastUpdate, history, uptimePct, histLoading } = state
   const online = !!metrics && !error
@@ -97,7 +97,10 @@ function ServerCard({ state, onRemove, selected, onSelect }: {
           <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium border ${online ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
             {online ? 'Online' : 'Offline'}
           </span>
-          <button onClick={e => { e.stopPropagation(); onRemove() }} className="w-6 h-6 flex items-center justify-center rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-all">
+          <button onClick={e => { e.stopPropagation(); onEdit() }} className="w-6 h-6 flex items-center justify-center rounded-lg text-muted-foreground hover:text-blue-400 hover:bg-blue-500/10 transition-all" title="Edit server">
+            <Edit2 className="w-3.5 h-3.5" />
+          </button>
+          <button onClick={e => { e.stopPropagation(); onRemove() }} className="w-6 h-6 flex items-center justify-center rounded-lg text-muted-foreground hover:text-red-400 hover:bg-red-500/10 transition-all" title="Remove">
             <Trash2 className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -491,6 +494,7 @@ export default function MonitoringDashboard({ initialServers }: { initialServers
             {states.map(state => (
               <ServerCard key={state.server.id} state={state}
                 onRemove={() => removeServer(state.server.id)}
+                onEdit={() => setEditServer(state.server)}
                 selected={selectedIds.has(state.server.id)}
                 onSelect={() => toggleSelect(state.server.id)}
               />
