@@ -59,40 +59,15 @@ model ContactMessage {
 }
 
 model App {
-  id          String         @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
-  slug        String         @unique
+  slug        String    @unique
   description String?
   iconUrl     String?
-  published   Boolean        @default(true)
+  published   Boolean   @default(true)
   pages       AppPage[]
-  tickets     SupportTicket[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-}
-
-model SupportTicket {
-  id        String          @id @default(cuid())
-  token     String          @unique @default(cuid())
-  name      String
-  email     String
-  message   String          @db.Text
-  status    String          @default("open")
-  category  String          @default("general")
-  app       App             @relation(fields: [appId], references: [id], onDelete: Cascade)
-  appId     String
-  messages  TicketMessage[]
-  createdAt DateTime        @default(now())
-}
-
-model TicketMessage {
-  id        String        @id @default(cuid())
-  content   String        @db.Text
-  imageUrl  String?       @db.Text
-  fromAdmin Boolean       @default(false)
-  ticket    SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
-  ticketId  String
-  createdAt DateTime      @default(now())
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 // ─── CRM ────────────────────────────────────────────────────────────────────
