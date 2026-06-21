@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Shield, FileText, HeadphonesIcon, ChevronRight } from 'lucide-react'
+import { ArrowLeft, Shield, FileText, ChevronRight } from 'lucide-react'
 import { prisma } from '@/lib/db'
 
 interface PageProps {
@@ -11,7 +11,6 @@ interface PageProps {
 const PAGE_TYPES = [
   { type: 'privacy', url: 'privacy-policy', label: 'Privacy Policy', icon: Shield, description: 'How we collect and use your data' },
   { type: 'terms', url: 'terms', label: 'Terms of Service', icon: FileText, description: 'Rules and conditions for using the app' },
-  { type: 'support', url: 'support', label: 'Support', icon: HeadphonesIcon, description: 'Get help and contact us' },
 ]
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

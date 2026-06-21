@@ -8,8 +8,6 @@ import {
   LayoutDashboard,
   FolderOpen,
   MessageSquare,
-  Smartphone,
-  LifeBuoy,
   Kanban,
   LogOut,
   Menu,
@@ -23,9 +21,7 @@ import { cn } from '@/lib/utils'
 const ALL_NAV = [
   { href: '/admin',            label: 'Dashboard', icon: LayoutDashboard, exact: true,  perm: null,           adminOnly: false },
   { href: '/admin/projects',   label: 'Projects',  icon: FolderOpen,      exact: false, perm: 'tab.projects', adminOnly: false },
-  { href: '/admin/apps',       label: 'Apps',      icon: Smartphone,      exact: false, perm: 'tab.apps',     adminOnly: false },
   { href: '/admin/crm',        label: 'CRM',       icon: Kanban,          exact: false, perm: 'tab.crm',      adminOnly: false },
-  { href: '/admin/support',    label: 'Support',   icon: LifeBuoy,        exact: false, perm: 'tab.support',  adminOnly: false },
   { href: '/admin/messages',   label: 'Messages',  icon: MessageSquare,   exact: false, perm: 'tab.messages', adminOnly: false },
   { href: '/admin/crm/users',  label: 'Users',      icon: UserCog,   exact: false, perm: null, adminOnly: true },
   { href: '/admin/monitoring', label: 'Monitoring', icon: Activity,  exact: false, perm: null, adminOnly: true },

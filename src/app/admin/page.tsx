@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { FolderOpen, MessageSquare, Eye, PlusCircle, ArrowRight, Kanban, LifeBuoy } from 'lucide-react'
+import { FolderOpen, MessageSquare, Eye, PlusCircle, ArrowRight, Kanban } from 'lucide-react'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import AdminShell from '@/components/admin/AdminShell'
@@ -13,15 +13,13 @@ export default async function AdminDashboardPage() {
   const isAdmin = session.role === 'admin'
   const can = (perm: string) => isAdmin || session.permissions.includes(perm)
 
-  const [projectCount, publishedCount, messageCount, unreadCount, recentMessages, recentTickets, openTicketCount] =
+  const [projectCount, publishedCount, messageCount, unreadCount, recentMessages] =
     await Promise.all([
       can('tab.projects') ? prisma.project.count() : Promise.resolve(null),
       can('tab.projects') ? prisma.project.count({ where: { published: true } }) : Promise.resolve(null),
       can('tab.messages') ? prisma.contactMessage.count() : Promise.resolve(null),
       can('tab.messages') ? prisma.contactMessage.count({ where: { read: false } }) : Promise.resolve(null),
       can('tab.messages') ? prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }) : Promise.resolve([]),
-      can('tab.support') ? prisma.supportTicket.findMany({ orderBy: { createdAt: 'desc' }, take: 5, include: { app: { select: { name: true } } } }) : Promise.resolve([]),
-      can('tab.support') ? prisma.supportTicket.count({ where: { status: 'open' } }) : Promise.resolve(null),
     ])
 
   const stats = [
@@ -38,11 +36,6 @@ export default async function AdminDashboardPage() {
     can('tab.crm') && {
       label: 'CRM', value: 'Open', sub: 'Project manager',
       icon: Kanban, href: '/admin/crm', color: 'from-violet-500 to-purple-500',
-    },
-    can('tab.support') && {
-      label: 'Support', value: openTicketCount,
-      sub: (openTicketCount ?? 0) > 0 ? `${openTicketCount} open tickets` : 'No open tickets',
-      icon: LifeBuoy, href: '/admin/support', color: 'from-teal-500 to-cyan-500',
     },
     isAdmin && {
       label: 'Live Site', value: 'View', sub: 'Open in new tab',
@@ -107,74 +100,33 @@ export default async function AdminDashboardPage() {
           </div>
         )}
 
-        {/* Recent messages + tickets */}
-        {(can('tab.messages') || can('tab.support')) && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Messages */}
-            {can('tab.messages') && (
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-heading font-semibold text-base text-foreground">Recent Messages</h2>
-                  <Link href="/admin/messages" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors">
-                    View all <ArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-                {recentMessages.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No messages yet</p>
-                ) : (
-                  <div className="space-y-2">
-                    {recentMessages.map((msg) => (
-                      <div key={msg.id} className={`p-4 rounded-xl border ${!msg.read ? 'border-blue-500/20 bg-blue-500/5' : 'border-border bg-card'}`}>
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-sm text-foreground">{msg.name}</span>
-                              {!msg.read && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />}
-                            </div>
-                            <p className="text-xs text-muted-foreground truncate">{msg.subject || msg.message}</p>
-                          </div>
-                          <span className="text-xs text-muted-foreground flex-shrink-0">{formatDate(msg.createdAt)}</span>
+        {/* Recent messages */}
+        {can('tab.messages') && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-heading font-semibold text-base text-foreground">Recent Messages</h2>
+              <Link href="/admin/messages" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors">
+                View all <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+            {recentMessages.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No messages yet</p>
+            ) : (
+              <div className="space-y-2">
+                {recentMessages.map((msg) => (
+                  <div key={msg.id} className={`p-4 rounded-xl border ${!msg.read ? 'border-blue-500/20 bg-blue-500/5' : 'border-border bg-card'}`}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-medium text-sm text-foreground">{msg.name}</span>
+                          {!msg.read && <span className="w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0" />}
                         </div>
+                        <p className="text-xs text-muted-foreground truncate">{msg.subject || msg.message}</p>
                       </div>
-                    ))}
+                      <span className="text-xs text-muted-foreground flex-shrink-0">{formatDate(msg.createdAt)}</span>
+                    </div>
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Support tickets */}
-            {can('tab.support') && (
-              <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-heading font-semibold text-base text-foreground">Recent Tickets</h2>
-                  <Link href="/admin/support" className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors">
-                    View all <ArrowRight className="w-3 h-3" />
-                  </Link>
-                </div>
-                {recentTickets.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No tickets yet</p>
-                ) : (
-                  <div className="space-y-2">
-                    {recentTickets.map((ticket) => (
-                      <Link key={ticket.id} href={`/admin/support/${ticket.id}`} className="block p-4 rounded-xl border border-border bg-card hover:border-blue-500/20 hover:bg-blue-500/5 transition-all">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <span className="font-medium text-sm text-foreground">{ticket.name}</span>
-                              <span className={`px-1.5 py-0.5 rounded-full text-[10px] font-medium border flex-shrink-0 ${
-                                ticket.status === 'open'
-                                  ? 'bg-amber-500/10 text-amber-400 border-amber-500/20'
-                                  : 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20'
-                              }`}>{ticket.status}</span>
-                            </div>
-                            <p className="text-xs text-muted-foreground truncate">{ticket.app.name} · {ticket.email}</p>
-                          </div>
-                          <span className="text-xs text-muted-foreground flex-shrink-0">{formatDate(ticket.createdAt)}</span>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                )}
+                ))}
               </div>
             )}
           </div>
