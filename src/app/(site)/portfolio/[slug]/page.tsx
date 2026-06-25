@@ -61,8 +61,11 @@ export default async function ProjectPage({ params }: PageProps) {
 
   if (!project) notFound()
 
-  const isInboxFlow = slug === 'inboxflow'
-  const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.inboxflow.app'
+  // Per-project "Download on Google Play" links. Add a slug here to show the button.
+  const STORE_URLS: Record<string, string> = {
+    inboxflow: 'https://play.google.com/store/apps/details?id=com.inboxflow.app',
+  }
+  const storeUrl = STORE_URLS[slug]
 
   return (
     <>
@@ -103,9 +106,9 @@ export default async function ProjectPage({ params }: PageProps) {
               </AnimatedSection>
               <AnimatedSection delay={0.15}>
                 <div className="flex flex-wrap gap-3">
-                  {isInboxFlow && (
+                  {storeUrl && (
                     <a
-                      href={PLAY_URL}
+                      href={storeUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/25"
@@ -142,24 +145,23 @@ export default async function ProjectPage({ params }: PageProps) {
 
             {/* Cover image */}
             <AnimatedSection delay={0.2} direction="left">
-              <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden isolate border border-border bg-muted/30">
-                {project.coverImage ? (
-                  <Image
-                    src={project.coverImage}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className={isInboxFlow ? 'object-contain' : 'object-cover'}
-                    priority
-                  />
-                ) : (
+              {project.coverImage ? (
+                // Show the full cover at its natural ratio — no crop, no side bands.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={project.coverImage}
+                  alt={project.title}
+                  className="w-full h-auto rounded-2xl border border-border shadow-2xl shadow-black/30"
+                />
+              ) : (
+                <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden isolate border border-border bg-muted/30">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-indigo-600/20 to-violet-600/20 flex items-center justify-center">
                     <span className="text-8xl font-bold text-white/10 font-heading select-none">
                       {project.title.charAt(0)}
                     </span>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </AnimatedSection>
           </div>
         </div>
