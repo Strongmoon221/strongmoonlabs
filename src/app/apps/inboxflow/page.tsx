@@ -6,8 +6,8 @@ import {
 } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'InboxFlow — Clean up your Gmail inbox · Strongmoon Labs',
-  description: 'InboxFlow is an email management app that connects to your Gmail account and helps you declutter your inbox — group senders, bulk-delete, mark as read, automate, and stay on top of new mail.',
+  title: 'InboxFlow — Clean up your email inbox · Strongmoon Labs',
+  description: 'InboxFlow is an email management app that connects to your mailbox via IMAP and helps you declutter your inbox — group senders, bulk-delete, mark as read, automate, and stay on top of new mail.',
 }
 
 const FEATURES = [
@@ -21,9 +21,10 @@ const FEATURES = [
 ]
 
 const LEGAL = [
-  { icon: Shield,          label: 'Privacy Policy',   href: '/apps/inboxflow/privacy-policy', desc: 'How we collect and use your data' },
-  { icon: FileText,        label: 'Terms of Service', href: '/apps/inboxflow/terms',           desc: 'Rules and conditions for using the app' },
-  { icon: HeadphonesIcon,  label: 'Support',          href: 'mailto:support@inboxflow.cloud',  desc: 'support@inboxflow.cloud', external: true },
+  { icon: Shield,          label: 'Privacy Policy',          href: '/apps/inboxflow/privacy-policy',  desc: 'How we collect and use your data' },
+  { icon: FileText,        label: 'Terms of Service',        href: '/apps/inboxflow/terms',           desc: 'Rules and conditions for using the app' },
+  { icon: Trash2,          label: 'Account & Data Deletion', href: '/apps/inboxflow/delete-account',  desc: 'How to delete your account and data' },
+  { icon: HeadphonesIcon,  label: 'Support',                 href: 'mailto:support@inboxflow.cloud',  desc: 'support@inboxflow.cloud', external: true },
 ]
 
 export default function InboxFlowPage() {
@@ -69,12 +70,12 @@ export default function InboxFlowPage() {
             InboxFlow
           </h1>
           <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
-            Clean up and take control of your Gmail inbox.
+            Clean up and take control of your email inbox.
           </p>
 
           <div className="mt-8 p-4 rounded-2xl bg-blue-500/5 border border-blue-500/15 text-sm text-muted-foreground max-w-xl leading-relaxed">
-            InboxFlow connects to your Gmail account and helps you declutter your inbox — group senders,
-            bulk-delete, mark as read, automate, and stay on top of new mail.
+            InboxFlow connects to your mailbox via IMAP (using a secure app password) and helps you declutter
+            your inbox — group senders, bulk-delete, mark as read, automate, and stay on top of new mail.
           </div>
 
           <a
@@ -123,36 +124,31 @@ export default function InboxFlowPage() {
           </div>
         </section>
 
-        {/* Google data usage */}
+        {/* How we handle your data */}
         <section className="mb-16">
-          <h2 className="text-xl font-heading font-bold text-foreground mb-4">How we use your Google data</h2>
+          <h2 className="text-xl font-heading font-bold text-foreground mb-4">How InboxFlow handles your data</h2>
 
           <div className="rounded-2xl border border-border bg-card p-5 space-y-4 text-sm text-muted-foreground leading-relaxed">
             <p>
-              InboxFlow uses the Gmail API with the{' '}
-              <code className="text-xs bg-muted/50 px-1.5 py-0.5 rounded font-mono text-blue-400">
-                https://www.googleapis.com/auth/gmail.modify
-              </code>{' '}
-              scope to <strong className="text-foreground">read</strong> your messages (to display and group them),{' '}
-              <strong className="text-foreground">mark them as read</strong>, and{' '}
-              <strong className="text-foreground">move them to Trash</strong> on your request. We never send email on your behalf.
+              InboxFlow connects to your mailbox over <strong className="text-foreground">IMAP</strong> using an{' '}
+              <strong className="text-foreground">app password</strong> you provide. It can{' '}
+              <strong className="text-foreground">read</strong> your messages (to display and group them),{' '}
+              <strong className="text-foreground">mark them as read</strong>,{' '}
+              <strong className="text-foreground">star</strong>, and{' '}
+              <strong className="text-foreground">move them to Trash or delete them</strong> on your request.
+              It never sends email on your behalf.
             </p>
             <p>
-              Your data is used solely to provide these features. It is encrypted, never sold, never used
-              for advertising, and never used to train AI/ML models. When you disconnect a mailbox or delete
-              your account, your data is removed and the Google OAuth token is revoked.
+              Your data is used solely to provide these features. Mailbox credentials are encrypted at rest
+              (AES-256-GCM), your data is never sold, never used for advertising, and never used to train AI/ML models.
             </p>
             <p>
-              Our use of Google user data adheres to the{' '}
-              <a
-                href="https://developers.google.com/terms/api-services-user-data-policy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                Google API Services User Data Policy
-              </a>
-              , including the Limited Use requirements.
+              When you disconnect a mailbox or delete your account, the stored emails and your encrypted
+              credentials are removed, and the app loses all access to your mailbox. See our{' '}
+              <Link href="/apps/inboxflow/privacy-policy" className="text-blue-400 hover:underline">Privacy Policy</Link>{' '}
+              and{' '}
+              <Link href="/apps/inboxflow/delete-account" className="text-blue-400 hover:underline">Account &amp; Data Deletion</Link>{' '}
+              pages for details.
             </p>
           </div>
         </section>

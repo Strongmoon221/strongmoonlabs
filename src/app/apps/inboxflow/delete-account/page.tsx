@@ -85,6 +85,20 @@ export default function DeleteAccountPage() {
             actual mailbox — it only removes the data InboxFlow stored and revokes our access to your mailbox.
           </p>
 
+          <h3>Deleting data without deleting your account</h3>
+          <p>
+            You can also remove data without closing your account:
+          </p>
+          <ul>
+            <li><strong>Disconnect a mailbox</strong> — in <strong>Settings</strong>, remove a connected mailbox.
+              This deletes that mailbox&rsquo;s stored emails and its encrypted IMAP credentials from our servers,
+              while keeping your InboxFlow account.</li>
+            <li><strong>Empty the Trash</strong> — permanently removes the emails you deleted.</li>
+            <li><strong>Request specific data deletion</strong> — email{' '}
+              <a href={`mailto:${SUPPORT}?subject=Delete my data`}>{SUPPORT}</a> with the subject
+              &quot;Delete my data&quot; describing what you&rsquo;d like removed.</li>
+          </ul>
+
           <h3>Data retention</h3>
           <p>
             When you delete your account in the app, your data is removed immediately. For email

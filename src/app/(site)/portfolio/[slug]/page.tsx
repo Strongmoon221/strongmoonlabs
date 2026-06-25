@@ -61,6 +61,9 @@ export default async function ProjectPage({ params }: PageProps) {
 
   if (!project) notFound()
 
+  const isInboxFlow = slug === 'inboxflow'
+  const PLAY_URL = 'https://play.google.com/store/apps/details?id=com.inboxflow.app'
+
   return (
     <>
       {/* Back navigation */}
@@ -100,6 +103,17 @@ export default async function ProjectPage({ params }: PageProps) {
               </AnimatedSection>
               <AnimatedSection delay={0.15}>
                 <div className="flex flex-wrap gap-3">
+                  {isInboxFlow && (
+                    <a
+                      href={PLAY_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/25"
+                    >
+                      <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white"><path d="M3.18 23.76c.28.16.6.24.93.24.4 0 .8-.11 1.14-.31l13.5-7.76-3.03-3.03-12.54 10.86zm-1.18-20.4v17.28l9.64-8.64L2 3.36zm19.5 8.4-2.93-1.69L15.45 12l3.12 3.12 2.93-1.69c.84-.48.84-1.68 0-2.16zM4.11.55 16.65 8.3 13.62 11.33 1.08.47C1.43.17 1.85.01 2.28.01c.62 0 1.24.27 1.83.54z"/></svg>
+                      Download on Google Play
+                    </a>
+                  )}
                   {project.liveUrl && (
                     <a
                       href={project.liveUrl}
@@ -128,13 +142,14 @@ export default async function ProjectPage({ params }: PageProps) {
 
             {/* Cover image */}
             <AnimatedSection delay={0.2} direction="left">
-              <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden isolate border border-border">
+              <div className="relative h-72 lg:h-96 rounded-2xl overflow-hidden isolate border border-border bg-muted/30">
                 {project.coverImage ? (
                   <Image
                     src={project.coverImage}
                     alt={project.title}
                     fill
-                    className="object-cover"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className={isInboxFlow ? 'object-contain' : 'object-cover'}
                     priority
                   />
                 ) : (
