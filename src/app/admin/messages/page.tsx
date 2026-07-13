@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+﻿import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import AdminShell from '@/components/admin/AdminShell'
@@ -9,14 +9,13 @@ export const metadata = { title: 'Messages' }
 export default async function AdminMessagesPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
-  if (session.role !== 'admin' && !session.permissions.includes('tab.messages')) redirect('/admin')
 
   const messages = await prisma.contactMessage.findMany({
     orderBy: { createdAt: 'desc' },
   })
 
   return (
-    <AdminShell role={session.role} permissions={session.permissions}>
+    <AdminShell>
       <div className="max-w-4xl">
         <div className="mb-8">
           <h1 className="text-2xl font-heading font-bold text-foreground mb-1">Messages</h1>
@@ -29,3 +28,4 @@ export default async function AdminMessagesPage() {
     </AdminShell>
   )
 }
+

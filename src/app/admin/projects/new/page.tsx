@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+﻿import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import { getSession } from '@/lib/auth'
@@ -12,7 +12,7 @@ export default async function NewProjectPage() {
   if (!session) redirect('/admin/login')
 
   return (
-    <AdminShell role={session.role} permissions={session.permissions}>
+    <AdminShell>
       <div>
         <Link
           href="/admin/projects"
@@ -27,3 +27,4 @@ export default async function NewProjectPage() {
     </AdminShell>
   )
 }
+

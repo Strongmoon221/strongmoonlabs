@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+﻿import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { PlusCircle, Pencil, Eye, Star } from 'lucide-react'
 import { getSession } from '@/lib/auth'
@@ -18,12 +18,11 @@ async function getProjects() {
 export default async function AdminProjectsPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
-  if (session.role !== 'admin' && !session.permissions.includes('tab.projects')) redirect('/admin')
 
   const projects = await getProjects()
 
   return (
-    <AdminShell role={session.role} permissions={session.permissions}>
+    <AdminShell>
       <div className="max-w-6xl">
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -128,3 +127,4 @@ export default async function AdminProjectsPage() {
     </AdminShell>
   )
 }
+

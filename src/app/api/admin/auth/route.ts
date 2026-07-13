@@ -14,25 +14,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { email, password } = loginSchema.parse(body)
 
-    // Check admin user first
     const adminUser = await prisma.adminUser.findUnique({ where: { email } })
     if (adminUser) {
       const valid = await bcrypt.compare(password, adminUser.password)
       if (valid) {
-        await createSession(adminUser.id, adminUser.email, 'admin', [])
+        await createSession(adminUser.id, adminUser.email)
         return NextResponse.json({ success: true, user: { id: adminUser.id, email: adminUser.email, name: adminUser.name } })
-      }
-    }
-
-    // Check CRM account
-    const crmUser = await prisma.crmAccount.findUnique({ where: { email } })
-    if (crmUser && crmUser.active) {
-      const valid = await bcrypt.compare(password, crmUser.password)
-      if (valid) {
-        const permissions: string[] = (() => { try { return JSON.parse(crmUser.permissions) } catch { return [] } })()
-        const resources = (() => { try { return JSON.parse(crmUser.resources ?? '{}') } catch { return {} } })()
-        await createSession(crmUser.id, crmUser.email, 'crm', permissions, resources)
-        return NextResponse.json({ success: true, user: { id: crmUser.id, email: crmUser.email, name: crmUser.name } })
       }
     }
 

@@ -8,40 +8,29 @@ import {
   LayoutDashboard,
   FolderOpen,
   MessageSquare,
-  Kanban,
   LogOut,
   Menu,
   X,
   ChevronRight,
-  UserCog,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const ALL_NAV = [
-  { href: '/admin',            label: 'Dashboard', icon: LayoutDashboard, exact: true,  perm: null,           adminOnly: false },
-  { href: '/admin/projects',   label: 'Projects',  icon: FolderOpen,      exact: false, perm: 'tab.projects', adminOnly: false },
-  { href: '/admin/crm',        label: 'CRM',       icon: Kanban,          exact: false, perm: 'tab.crm',      adminOnly: false },
-  { href: '/admin/messages',   label: 'Messages',  icon: MessageSquare,   exact: false, perm: 'tab.messages', adminOnly: false },
-  { href: '/admin/crm/users',  label: 'Users',      icon: UserCog,   exact: false, perm: null, adminOnly: true },
+  { href: '/admin',          label: 'Dashboard', icon: LayoutDashboard, exact: true,  perm: null,           adminOnly: false },
+  { href: '/admin/projects', label: 'Projects',  icon: FolderOpen,      exact: false, perm: 'tab.projects', adminOnly: false },
+  { href: '/admin/messages', label: 'Messages',  icon: MessageSquare,   exact: false, perm: 'tab.messages', adminOnly: false },
 ]
 
 interface AdminShellProps {
   children: React.ReactNode
-  role?: 'admin' | 'crm'
-  permissions?: string[]
 }
 
-export default function AdminShell({ children, role = 'admin', permissions = [] }: AdminShellProps) {
+export default function AdminShell({ children }: AdminShellProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const isAdmin = role === 'admin'
-  const navItems = ALL_NAV.filter(item => {
-    if (item.adminOnly) return isAdmin
-    if (isAdmin) return true
-    return item.perm === null || permissions.includes(item.perm)
-  })
+  const navItems = ALL_NAV
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth', { method: 'DELETE' })
@@ -63,7 +52,7 @@ export default function AdminShell({ children, role = 'admin', permissions = [] 
           <div className="flex flex-col leading-none">
             <span className="font-heading font-bold text-sm text-foreground">Strongmoon</span>
             <span className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
-              {isAdmin ? 'Admin Panel' : 'Portal'}
+              Admin Panel
             </span>
           </div>
         </Link>
@@ -91,16 +80,14 @@ export default function AdminShell({ children, role = 'admin', permissions = [] 
 
       {/* Bottom */}
       <div className="p-3 border-t border-border">
-        {isAdmin && (
-          <Link
-            href="/"
-            target="_blank"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all mb-1"
-          >
-            <Moon className="w-4 h-4" />
-            View Site
-          </Link>
-        )}
+        <Link
+          href="/"
+          target="_blank"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted transition-all mb-1"
+        >
+          <Moon className="w-4 h-4" />
+          View Site
+        </Link>
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-red-400 hover:bg-red-500/5 transition-all w-full"

@@ -1,6 +1,6 @@
-import { redirect } from 'next/navigation'
+﻿import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { FolderOpen, MessageSquare, Eye, PlusCircle, ArrowRight, Kanban } from 'lucide-react'
+import { FolderOpen, MessageSquare, Eye, PlusCircle, ArrowRight } from 'lucide-react'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import AdminShell from '@/components/admin/AdminShell'
@@ -10,41 +10,34 @@ export default async function AdminDashboardPage() {
   const session = await getSession()
   if (!session) redirect('/admin/login')
 
-  const isAdmin = session.role === 'admin'
-  const can = (perm: string) => isAdmin || session.permissions.includes(perm)
-
   const [projectCount, publishedCount, messageCount, unreadCount, recentMessages] =
     await Promise.all([
-      can('tab.projects') ? prisma.project.count() : Promise.resolve(null),
-      can('tab.projects') ? prisma.project.count({ where: { published: true } }) : Promise.resolve(null),
-      can('tab.messages') ? prisma.contactMessage.count() : Promise.resolve(null),
-      can('tab.messages') ? prisma.contactMessage.count({ where: { read: false } }) : Promise.resolve(null),
-      can('tab.messages') ? prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }) : Promise.resolve([]),
+      prisma.project.count(),
+      prisma.project.count({ where: { published: true } }),
+      prisma.contactMessage.count(),
+      prisma.contactMessage.count({ where: { read: false } }),
+      prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' }, take: 5 }),
     ])
 
   const stats = [
-    can('tab.projects') && {
+    {
       label: 'Total Projects', value: projectCount, sub: `${publishedCount} published`,
       icon: FolderOpen, href: '/admin/projects', color: 'from-blue-500 to-indigo-500',
     },
-    can('tab.messages') && {
+    {
       label: 'Contact Messages', value: messageCount,
       sub: (unreadCount ?? 0) > 0 ? `${unreadCount} unread` : 'All read',
       icon: MessageSquare, href: '/admin/messages',
       color: (unreadCount ?? 0) > 0 ? 'from-amber-500 to-orange-500' : 'from-emerald-500 to-teal-500',
     },
-    can('tab.crm') && {
-      label: 'CRM', value: 'Open', sub: 'Project manager',
-      icon: Kanban, href: '/admin/crm', color: 'from-violet-500 to-purple-500',
-    },
-    isAdmin && {
+    {
       label: 'Live Site', value: 'View', sub: 'Open in new tab',
       icon: Eye, href: '/', color: 'from-zinc-500 to-zinc-600', external: true,
     },
-  ].filter(Boolean) as { label: string; value: string | number | null; sub: string; icon: React.ElementType; href: string; color: string; external?: boolean }[]
+  ] as { label: string; value: string | number | null; sub: string; icon: React.ElementType; href: string; color: string; external?: boolean }[]
 
   return (
-    <AdminShell role={session.role} permissions={session.permissions}>
+    <AdminShell>
       <div className="max-w-5xl">
         <div className="mb-8">
           <h1 className="text-2xl font-heading font-bold text-foreground mb-1">Dashboard</h1>
@@ -74,34 +67,26 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Quick actions */}
-        {(can('tab.projects') || can('tab.messages')) && (
-          <div className="mb-10">
-            <h2 className="font-heading font-semibold text-base text-foreground mb-4">Quick Actions</h2>
-            <div className="flex flex-wrap gap-3">
-              {can('tab.projects') && can('projects.create') && (
-                <Link href="/admin/projects/new" className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/25">
-                  <PlusCircle className="w-4 h-4" /> New Project
-                </Link>
+        <div className="mb-10">
+          <h2 className="font-heading font-semibold text-base text-foreground mb-4">Quick Actions</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/admin/projects/new" className="inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-all shadow-lg shadow-blue-600/25">
+              <PlusCircle className="w-4 h-4" /> New Project
+            </Link>
+            <Link href="/admin/projects" className="inline-flex items-center gap-2 px-4 py-2.5 border border-border text-foreground text-sm font-semibold rounded-xl hover:bg-muted transition-all">
+              <FolderOpen className="w-4 h-4" /> All Projects
+            </Link>
+            <Link href="/admin/messages" className="inline-flex items-center gap-2 px-4 py-2.5 border border-border text-foreground text-sm font-semibold rounded-xl hover:bg-muted transition-all">
+              <MessageSquare className="w-4 h-4" /> Messages
+              {(unreadCount ?? 0) > 0 && (
+                <span className="px-1.5 py-0.5 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30">{unreadCount}</span>
               )}
-              {can('tab.projects') && (
-                <Link href="/admin/projects" className="inline-flex items-center gap-2 px-4 py-2.5 border border-border text-foreground text-sm font-semibold rounded-xl hover:bg-muted transition-all">
-                  <FolderOpen className="w-4 h-4" /> All Projects
-                </Link>
-              )}
-              {can('tab.messages') && (
-                <Link href="/admin/messages" className="inline-flex items-center gap-2 px-4 py-2.5 border border-border text-foreground text-sm font-semibold rounded-xl hover:bg-muted transition-all">
-                  <MessageSquare className="w-4 h-4" /> Messages
-                  {(unreadCount ?? 0) > 0 && (
-                    <span className="px-1.5 py-0.5 rounded-full text-xs bg-amber-500/20 text-amber-400 border border-amber-500/30">{unreadCount}</span>
-                  )}
-                </Link>
-              )}
-            </div>
+            </Link>
           </div>
-        )}
+        </div>
 
         {/* Recent messages */}
-        {can('tab.messages') && (
+        <div className="max-w-xl">
           <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="font-heading font-semibold text-base text-foreground">Recent Messages</h2>
@@ -130,8 +115,9 @@ export default async function AdminDashboardPage() {
               </div>
             )}
           </div>
-        )}
+        </div>
       </div>
     </AdminShell>
   )
 }
+

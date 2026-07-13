@@ -6,27 +6,13 @@ const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || 'fallback-secret-CHANGE-IN-PRODUCTION-12345'
 )
 
-export interface CrmResources {
-  apps?: string[]
-  support?: string[]
-}
-
 export interface SessionPayload {
   userId: string
   email: string
-  role: 'admin' | 'crm'
-  permissions: string[]
-  resources: CrmResources
 }
 
-export async function createSession(
-  userId: string,
-  email: string,
-  role: 'admin' | 'crm' = 'admin',
-  permissions: string[] = [],
-  resources: CrmResources = {}
-): Promise<void> {
-  const token = await new SignJWT({ userId, email, role, permissions, resources })
+export async function createSession(userId: string, email: string): Promise<void> {
+  const token = await new SignJWT({ userId, email })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('24h')
@@ -52,9 +38,6 @@ export async function getSession(): Promise<SessionPayload | null> {
     return {
       userId: payload.userId as string,
       email: payload.email as string,
-      role: (payload.role as 'admin' | 'crm') ?? 'admin',
-      permissions: (payload.permissions as string[]) ?? [],
-      resources: (payload.resources as CrmResources) ?? {},
     }
   } catch {
     return null
