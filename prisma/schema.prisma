@@ -138,62 +138,6 @@ model CrmTask {
   updatedAt   DateTime   @updatedAt
 }
 
-// ─── Monitoring ─────────────────────────────────────────────────────────────
-
-model MonitoredServer {
-  id                 String          @id @default(cuid())
-  name               String
-  url                String
-  token              String
-  color              String          @default("#3b82f6")
-  active             Boolean         @default(true)
-  // Alert config
-  alertTelegram      String?         // Telegram chat ID
-  alertEmail         String?
-  alertCpuThreshold  Int             @default(90)
-  alertRamThreshold  Int             @default(90)
-  alertDiskThreshold Int             @default(90)
-  // Location for map
-  lat                Float?
-  lng                Float?
-  country            String?
-  // Checks
-  sslDomain          String?         // domain for SSL cert check
-  healthUrl          String?         // URL that should return 200
-  // Relations
-  metrics            ServerMetric[]
-  incidents          ServerIncident[]
-  createdAt          DateTime        @default(now())
-  updatedAt          DateTime        @updatedAt
-}
-
-model ServerMetric {
-  id           String          @id @default(cuid())
-  server       MonitoredServer @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  serverId     String
-  online       Boolean
-  cpuPercent   Float           @default(0)
-  memPercent   Float           @default(0)
-  diskPercent  Float           @default(0)
-  responseMs   Int             @default(0)
-  sslDaysLeft  Int?
-  healthOk     Boolean?
-  createdAt    DateTime        @default(now())
-
-  @@index([serverId, createdAt])
-}
-
-model ServerIncident {
-  id         String          @id @default(cuid())
-  server     MonitoredServer @relation(fields: [serverId], references: [id], onDelete: Cascade)
-  serverId   String
-  type       String          // offline | cpu | ram | disk | ssl | health
-  message    String
-  startedAt  DateTime        @default(now())
-  resolvedAt DateTime?
-
-  @@index([serverId, startedAt])
-}
 
 model AppPage {
   id        String   @id @default(cuid())
